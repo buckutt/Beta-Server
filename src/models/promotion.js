@@ -9,6 +9,7 @@ let Promotion = thinky.createModel('Promotion', {
     editedAt : Date,
     isRemoved: type.boolean().default(false),
     priceId  : type.string().optional() // Force Thinky to show thoses additional fields that would be cut by enforce_extra
+    pointId  : type.string().optional() // Force Thinky to show thoses additional fields that would be cut by enforce_extra
 }, {
     enforce_missing: true,
     enforce_extra  : 'remove',
@@ -25,6 +26,7 @@ Promotion.ensureIndex('createdAt');
 Promotion.ensureIndex('editedAt');
 
 Promotion.associate = models => {
+    models.Promotion.belongsTo(models.Point, 'point', 'pointId', 'id');
     models.Promotion.belongsTo(models.Price, 'price', 'priceId', 'id');
     // n:n instead of 1:n to allow one promotion containing multiple times the same article
     models.Promotion.hasAndBelongsToMany(models.Article, 'articles', 'id', 'id');

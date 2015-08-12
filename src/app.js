@@ -54,12 +54,23 @@ controllers.forEach(controller => {
     controller(app);
 });
 
+// Service controllers subrouters
+let services = fs
+    .readdirSync(path.join(config.root, 'contorllers/', 'services/'))
+    .filter(f => f.slice(-3) === '.js')
+    .sort()
+    .map(f => require(path.join(config.root, 'controllers/', 'services/', f)));
+
+services.forEach(service => {
+    service(app);
+});
+
 // 404 Handling
 app.use((req, res, next) => {
     next(new APIError(404, 'Not Found'));
 });
 
-// Other errors (req is not used, but four arguments must be detected by jshint)
+// Other errors (req is not used, but four arguments must be detected by express to recognize error middleware)
 app.use((err, req, res, next) => { // jshint ignore:line
     if (!(err instanceof APIError)) {
         // Classic errors
