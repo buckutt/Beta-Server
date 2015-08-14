@@ -2,40 +2,6 @@ import APIError from '../APIError';
 
 const disableAuth = true;
 
-let authorize = {
-    all: ['admin', 'seller'],
-    seller: {
-        read: [
-            '/api/articles',
-            '/api/articleslinks',
-            '/api/users',
-            '/api/usersrights',
-            '/api/usersgroups',
-            '/api/devicespoints',
-            '/api/devices',
-            '/api/meanofloginsusers',
-            '/api/services/availableArticles'
-        ],
-        write: [
-            '/api/services/purchase'
-        ]
-    },
-    reloader: {
-        read: [
-            '/api/users',
-            '/api/usersrights',
-            '/api/usersgroups',
-            '/api/devicespoints',
-            '/api/devices',
-            '/api/reloadtypes',
-            '/api/meanofloginsusers'
-        ],
-        write: [
-            '/api/services/reload'
-        ]
-    }
-};
-
 /**
  * Check for the current user wether he can do what he wants
  * @param {Request}  req  Express request
@@ -43,6 +9,8 @@ let authorize = {
  * @param {Function} next Next middleware
  */
 export default (req, res, next) => {
+    let authorize = req.app.locals.config.rightsManagement;
+
     if (disableAuth) { return next(); }
 
     if (req.url === '/api/services/login') {

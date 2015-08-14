@@ -4,10 +4,45 @@ let secret   = 'NgWlfDWCbX4mPuxau1FmG3TPLHm7iglEA3mp1f8nrlT7zKDn8ZZAwWQOqUArvQBF
 let rootPath = path.normalize(__dirname);
 let env      = process.env.NODE_ENV || 'development';
 
+let rightsManagement = {
+    all: ['admin', 'seller'],
+    seller: {
+        read: [
+            '/api/articles',
+            '/api/articleslinks',
+            '/api/users',
+            '/api/usersrights',
+            '/api/usersgroups',
+            '/api/devicespoints',
+            '/api/devices',
+            '/api/meanofloginsusers',
+            '/api/services/availableArticles'
+        ],
+        write: [
+            '/api/services/purchase'
+        ]
+    },
+    reloader: {
+        read: [
+            '/api/users',
+            '/api/usersrights',
+            '/api/usersgroups',
+            '/api/devicespoints',
+            '/api/devices',
+            '/api/reloadtypes',
+            '/api/meanofloginsusers'
+        ],
+        write: [
+            '/api/services/reload'
+        ]
+    }
+};
+
 let config = {
     development: {
         root: rootPath,
         secret: secret,
+        rightsManagement: rightsManagement,
         app: {
             name: 'buckuttServer'
         },
@@ -21,6 +56,7 @@ let config = {
     test: {
         root: rootPath,
         secret: secret,
+        rightsManagement: rightsManagement,
         app: {
             name: 'buckuttServer'
         },
@@ -34,6 +70,7 @@ let config = {
     production: {
         root: rootPath,
         secret: secret,
+        rightsManagement: rightsManagement,
         app: {
             name: 'buckuttServer'
         },
