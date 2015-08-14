@@ -31,6 +31,7 @@ Period.ensureIndex('editedAt');
 Period.associate = models => {
     models.Period.belongsTo(models.Fundation, 'fundation', 'fundationId', 'id');
     models.Period.hasMany(models.Price, 'prices', 'id', 'periodId');
+    models.Period.hasMany(models.Right, 'rights', 'id', 'periodId');
 };
 
 export default Period;

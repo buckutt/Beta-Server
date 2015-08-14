@@ -8,7 +8,8 @@ let Right = thinky.createModel('Right', {
     isAdmin  : type.boolean().default(false),
     createdAt: type.date().default(new Date()),
     editedAt : Date,
-    isRemoved: type.boolean().default(false)
+    isRemoved: type.boolean().default(false),
+    periodId : type.string().optional()
 }, {
     enforce_missing: true,
     enforce_extra  : 'remove',
@@ -26,6 +27,7 @@ Right.ensureIndex('createdAt');
 Right.ensureIndex('editedAt');
 
 Right.associate = models => {
+    models.Right.belongsTo(models.Period, 'period', 'periodId', 'id');
     models.Right.hasAndBelongsToMany(models.User, 'users', 'id', 'id');
 };
 
