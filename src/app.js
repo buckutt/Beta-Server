@@ -18,11 +18,6 @@ consoleTitle('Buckutt Server **');
 
 let app = express();
 
-// Environment detection
-let env = process.env.NODE_ENV || 'development';
-app.locals.ENV = env;
-app.locals.ENV_DEVELOPMENT = (env === 'development');
-
 app.locals.config = config;
 app.locals.models = models;
 
