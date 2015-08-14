@@ -38,11 +38,14 @@ let rightsManagement = {
     }
 };
 
+let pinLoggingAllowed = ['seller'];
+
 let config = {
     development: {
         root: rootPath,
         secret: secret,
         rightsManagement: rightsManagement,
+        pinManagement: pinLoggingAllowed,
         app: {
             name: 'buckuttServer'
         },
@@ -57,6 +60,7 @@ let config = {
         root: rootPath,
         secret: secret,
         rightsManagement: rightsManagement,
+        pinManagement: pinLoggingAllowed,
         app: {
             name: 'buckuttServer'
         },
@@ -71,6 +75,7 @@ let config = {
         root: rootPath,
         secret: secret,
         rightsManagement: rightsManagement,
+        pinManagement: pinLoggingAllowed,
         app: {
             name: 'buckuttServer'
         },
