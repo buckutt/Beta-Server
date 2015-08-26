@@ -10,7 +10,8 @@ let Group = thinky.createModel('Group', {
     isOpen     : type.boolean().default(true),
     isPublic   : type.boolean().default(false),
     isRemoved  : type.boolean().default(false),
-    fundationId: type.string().optional() // Force Thinky to show thoses additional fields that would be cut by enforce_extra
+    // Force Thinky to show thoses additional fields that would be cut by enforce_extra
+    fundationId: type.string().optional()
 }, {
     enforce_missing: true,
     enforce_extra  : 'remove',
@@ -31,6 +32,5 @@ Group.associate = models => {
     models.Group.hasAndBelongsToMany(models.User, 'users', 'id', 'id');
     models.Group.hasMany(models.Price, 'prices', 'id', 'groupId');
 };
-
 
 export default Group;

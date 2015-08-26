@@ -31,25 +31,25 @@ export default app => {
             embed[submodel] = true;
         }
 
-        let queryLog = req.model + '.get(' + req.params.id + ').getJoin(' + pp(embed) + ').run()';
+        let queryLog = `${req.model}.get(${req.params.id}).getJoin(${pp(embed)}).run()`;
         log.info(queryLog);
 
         req.model
             .get(req.params.id)
             .getJoin(embed)
             .run()
-            .then(instance => {
+            .then(instance =>
                 res
                     .status(200)
                     .json(instance[submodel])
-                    .end();
-            })
-            .catch(thinky.Errors.DocumentNotFound, err => {
-                return next(new APIError(404, 'Document not found', err));
-            })
-            .catch(err => {
-                return next(new APIError(500, 'Unknown error', err));
-            });
+                    .end()
+            )
+            .catch(thinky.Errors.DocumentNotFound, err =>
+                next(new APIError(404, 'Document not found', err))
+            )
+            .catch(err =>
+                next(new APIError(500, 'Unknown error', err))
+            );
     });
 
     router.param('model', modelParser);

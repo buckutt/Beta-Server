@@ -23,14 +23,14 @@ export default app => {
                 return next();
             }
 
-            let queryLog = req.model + '.get(' + req.params.id + ')';
+            let queryLog = `${req.model}.get({req.params.id})`;
 
             let request = req.model
                 .get(req.params.id);
 
             // Embed multiple relatives
             if (req.query.embed) {
-                queryLog += '.getJoin( ' + pp(req.query.embed) + ' )';
+                queryLog += `.getJoin(${pp(req.query.embed)})`;
                 request = request.getJoin(req.query.embed);
             }
 
@@ -38,18 +38,18 @@ export default app => {
             log.info(queryLog);
             request
                 .run()
-                .then(instance => {
-                    return res
+                .then(instance =>
+                    res
                         .status(200)
                         .json(instance)
-                        .end();
-                })
-                .catch(thinky.Errors.DocumentNotFound, err => {
-                    return next(new APIError(404, 'Document not found', err));
-                })
-                .catch(err => {
-                    return next(new APIError(500, 'Unknown error', err));
-                });
+                        .end()
+                )
+                .catch(thinky.Errors.DocumentNotFound, err =>
+                    next(new APIError(404, 'Document not found', err))
+                )
+                .catch(err =>
+                    next(new APIError(500, 'Unknown error', err))
+                );
         } else {
             // List instances
             let request = req.model;
@@ -59,56 +59,58 @@ export default app => {
             if (req.query.orderBy) {
                 if (req.query.sort === 'asc') {
                     // Order ASC
-                    queryLog += '.orderBy({ index: r.asc(' + req.query.orderBy + ') })';
+                    queryLog += `.orderBy({ index: r.asc(${req.query.orderBy}) })`;
                     request = request.orderBy({
                         index: r.asc(req.query.orderBy)
                     });
                 } else if (req.query.sort === 'dsc') {
                     // Order DSC
-                    queryLog += '.orderBy({ index: r.desc(' + req.query.orderBy + ')})';
+                    queryLog += `.orderBy({ index: r.desc(${req.query.orderBy})})`;
                     request = request.orderBy({
                         index: r.desc(req.query.orderBy)
                     });
                 } else {
                     // Order Default
-                    queryLog += '.orderBy({ index: ' + req.query.orderBy + ' })';
-                    request = request.orderBy({ index: req.query.orderBy });
+                    queryLog += `.orderBy({ index: ${req.query.orderBy} })`;
+                    request = request.orderBy({
+                        index: req.query.orderBy
+                    });
                 }
             }
 
             // Limit
             if (req.query.limit) {
-                queryLog += '.limit(' + req.query.limit + ')';
+                queryLog += `.limit(${req.query.limit})`;
                 request = request.limit(req.query.limit);
             }
 
             // Skip/Offset
             if (req.query.offset) {
-                queryLog += '.skip(' + req.query.offset + ')';
+                queryLog += `.skip(${req.query.offset})`;
                 request = request.skip(req.query.offset);
             }
 
             // Embed multiple relatives
             if (req.query.embed) {
-                queryLog += '.getJoin( ' + pp(req.query.embed) + ' )';
+                queryLog += `.getJoin( ${pp(req.query.embed)} )`;
                 request = request.getJoin(req.query.embed);
             }
 
             queryLog += '.run()';
             log.info(queryLog);
             request.run()
-                .then(results => {
-                    return res
+                .then(results =>
+                    res
                         .status(200)
                         .json(results)
-                        .end();
-                })
-                .catch(thinky.Errors.DocumentNotFound, err => {
-                    return next(new APIError(404, 'Document not found', err));
-                })
-                .catch(err => {
-                    return next(new APIError(500, 'Unknown error', err));
-                });
+                        .end()
+                )
+                .catch(thinky.Errors.DocumentNotFound, err =>
+                    next(new APIError(404, 'Document not found', err))
+                )
+                .catch(err =>
+                    next(new APIError(500, 'Unknown error', err))
+                );
         }
     });
 

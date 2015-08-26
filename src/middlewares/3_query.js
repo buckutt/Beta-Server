@@ -51,6 +51,7 @@ export default (req, res, next) => {
 
     Object.keys(queryRules).forEach(q => {
         let value = (req.query.hasOwnProperty(q)) ? req.query[q].toString() : undefined;
+
         if (value === undefined) {
             return;
         }

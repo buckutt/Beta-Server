@@ -15,8 +15,9 @@ export default moduleToUse => {
             new winston.transports.Console({
                 timestamp  : () => {
                     let now = new Date();
-                    let date = pad2(now.getFullYear()) + '/' + pad2(now.getMonth()) + '/' + pad2(now.getDate());
-                    let time = pad2(now.getHours()) + ':' + pad2(now.getMinutes()) + ':' + pad2(now.getSeconds());
+                    let date = `${pad2(now.getFullYear())}/${pad2(now.getMonth())}/${pad2(now.getDate())}`;
+                    let time = `${pad2(now.getHours())}:${pad2(now.getMinutes())}:${pad2(now.getSeconds())}`;
+
                     return `[${date} ${time}]`;
                 },
                 prettyPrint: true,

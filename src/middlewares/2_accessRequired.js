@@ -11,7 +11,9 @@ const disableAuth = true;
 export default (req, res, next) => {
     let authorize = req.app.locals.config.rightsManagement;
 
-    if (disableAuth) { return next(); }
+    if (disableAuth) {
+        return next();
+    }
 
     if (req.url === '/api/services/login') {
         return next();

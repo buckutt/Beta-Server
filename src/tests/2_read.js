@@ -36,7 +36,7 @@ describe('Read', () => {
             unirest.get('http://localhost:3006/purchases/')
                 .type('json')
                 .end(response => {
-                    unirest.get('http://localhost:3006/purchases/' + response.body[0].id + '/?embed=buyer,seller,articles')
+                    unirest.get(`http://localhost:3006/purchases/${response.body[0].id}/?embed=buyer,seller,articles`)
                         .type('json')
                         .end(response => {
                             assert.equal('string', typeof response.body.buyer.id);

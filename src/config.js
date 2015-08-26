@@ -5,9 +5,9 @@ let rootPath = path.normalize(__dirname);
 let env      = process.env.NODE_ENV || 'development';
 
 let rightsManagement = {
-    all: ['admin', 'seller'],
-    seller: {
-        read: [
+    all     : ['admin', 'seller'],
+    seller  : {
+        read : [
             '/api/articles',
             '/api/articleslinks',
             '/api/users',
@@ -23,7 +23,7 @@ let rightsManagement = {
         ]
     },
     reloader: {
-        read: [
+        read : [
             '/api/users',
             '/api/usersrights',
             '/api/usersgroups',
@@ -42,48 +42,48 @@ let pinLoggingAllowed = ['seller'];
 
 let config = {
     development: {
-        root: rootPath,
-        secret: secret,
+        root            : rootPath,
+        secret          : secret,
         rightsManagement: rightsManagement,
-        pinManagement: pinLoggingAllowed,
-        app: {
+        pinManagement   : pinLoggingAllowed,
+        port            : 3000,
+        level           : 'debug',
+        app             : {
             name: 'buckuttServer'
         },
-        port: 3000,
-        db: {
+        db              : {
             db: 'buckuttServer_development'
-        },
-        level: 'debug'
+        }
     },
 
-    test: {
-        root: rootPath,
-        secret: secret,
+    test       : {
+        root            : rootPath,
+        secret          : secret,
         rightsManagement: rightsManagement,
-        pinManagement: pinLoggingAllowed,
-        app: {
+        pinManagement   : pinLoggingAllowed,
+        level           : 'debug',
+        port            : 3006,
+        app             : {
             name: 'buckuttServer'
         },
-        port: 3006,
-        db: {
+        db              : {
             db: 'buckuttServer_test'
-        },
-        level: 'debug'
+        }
     },
 
-    production: {
-        root: rootPath,
-        secret: secret,
+    production : {
+        root            : rootPath,
+        secret          : secret,
         rightsManagement: rightsManagement,
-        pinManagement: pinLoggingAllowed,
-        app: {
+        pinManagement   : pinLoggingAllowed,
+        port            : 3000,
+        level           : 'info',
+        app             : {
             name: 'buckuttServer'
         },
-        port: 3000,
-        db: {
+        db              : {
             db: 'buckuttServer_production'
-        },
-        level: 'info'
+        }
     }
 };
 

@@ -9,9 +9,10 @@ let Article = thinky.createModel('Article', {
     createdAt : type.date().default(new Date()),
     editedAt  : Date,
     isRemoved : type.boolean().default(false),
-    categoryId: type.string().optional(), // Force Thinky to show thoses additional fields that would be cut by enforce_extra
-    pointId   : type.string().optional(), // Force Thinky to show thoses additional fields that would be cut by enforce_extra
-    priceId   : type.string().optional() // Force Thinky to show thoses additional fields that would be cut by enforce_extra
+    // Force Thinky to show thoses additional fields that would be cut by enforce_extra
+    categoryId: type.string().optional(),
+    pointId   : type.string().optional(),
+    priceId   : type.string().optional()
 }, {
     enforce_missing: true,
     enforce_extra  : 'remove',

@@ -10,8 +10,8 @@ let Point = thinky.createModel('Point', {
     isRemoved: type.boolean().default(false)
 }, {
     enforce_missing: true,
-    // enforce_extra: 'remove',
-    // enforce_type: 'strict'
+    enforce_extra  : 'remove',
+    enforce_type   : 'strict'
 });
 
 Point.pre('save', function (next) {

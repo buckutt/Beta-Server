@@ -1,7 +1,7 @@
-import APIError        from '../APIError';
-import logger          from '../log';
-import express         from 'express';
-import Promise         from 'bluebird';
+import APIError from '../../APIError';
+import logger   from '../../log';
+import express  from 'express';
+import Promise  from 'bluebird';
 
 let log = logger(module);
 
@@ -35,67 +35,69 @@ export default app => {
                     return item.credit;
                 }
             })
-            .reduce((a, b) => {
-                return a + b;
-            });
+            .reduce((a, b) => a + b);
 
         if (req.user.credit < totalCost) {
             return next(new APIError(400, 'Not enough credit'));
         }
 
-        queryLog += 'User ' + req.user.fullname + ' ';
+        queryLog += `User ${req.user.fullname} `;
 
         req.body.basket.forEach(item => {
             if (item.type === 'purchase') {
                 // Purchases
                 let purchase = new models.Purchase({
-                    buyerId: 'id',
+                    buyerId    : 'id',
                     fundationId: 'id',
-                    pointId: 'id',
+                    pointId    : 'id',
                     promotionId: 'id',
-                    sellerId: 'id'
+                    sellerId   : 'id'
                 });
 
-                queryLog += 'buys' + item.title + ' ';
-                purchase.articles = [ 'id', 'id' ];
+                queryLog += `buys ${item.title} `;
+                purchase.articles = ['id', 'id'];
 
                 // Stock reduction
                 item.articles.forEach(article => {
-                    let stockReduction = models.Article.get(article).udpate(doc => {
-                        doc.decrease('stock')
-                    }).run();
+                    let stockReduction = models.Article
+                        .get(article)
+                        .udpate(doc => doc.sub('stock', 1))
+                        .run();
 
-                    stocks.push(stockRedution);
+                    stocks.push(stockReduction);
                 });
 
-                purchases.push(purchase.saveAll({ articles: true }));
+                purchases.push(purchase.saveAll({
+                    articles: true
+                }));
             } else if (item.type === 'reload') {
-                queryLog += 'reloads' + item.credit + ' ';
+                queryLog += `reloads ${item.credit} `;
 
                 // Reloads
                 let reload = new models.Reload({
-                    credit: '',
-                    trace: '',
-                    pointId: '',
-                    buyerId: '',
+                    credit  : '',
+                    trace   : '',
+                    pointId : '',
+                    buyerId : '',
                     sellerId: ''
                 });
 
-                reloads.push(purchase);
+                reloads.push(reload);
             }
         });
 
         log.info(queryLog);
 
         let everythingSaving = purchases.concat(reloads).concat(stocks);
-        Promise.all(everythingSaving)
-            .then(() => {
-                return res
+        Promise
+            .all(everythingSaving)
+            .then(() =>
+                res
                     .status(200)
                     .json({
                         newCost: req.user.credit - totalCost
                     })
-                    .end();
-            });
+                    .end()
+            );
     });
 };

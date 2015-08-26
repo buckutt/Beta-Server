@@ -1,6 +1,11 @@
 import assert  from 'assert';
 import unirest from 'unirest';
 
+/**
+ * Encodes a search string
+ * @param  {Object} obj A search object
+ * @return {String} The URL compatible search
+ */
 function q (obj) {
     return encodeURIComponent(JSON.stringify(obj));
 }
@@ -9,21 +14,21 @@ describe('Searching', () => {
     describe('Correct search query', () => {
         it('should search correctly', done => {
             let search = {
-                field: 'name',
+                field     : 'name',
                 startsWith: 'Ice Tea'
             };
 
             let or = {
                 field: 'name',
-                eq: 'Mars'
+                eq   : 'Mars'
             };
 
             let or2 = {
                 field: 'name',
-                eq: 'Mars'
+                eq   : 'Mars'
             };
 
-            unirest.get('http://localhost:3006/articles/search?q=' + q(search) + '&or[]=' + q(or) + '&or[]=' + q(or2))
+            unirest.get(`http://localhost:3006/articles/search?q=${q(search)}&or[]=${q(or)}&or[]=${q(or2)}`)
                 .type('json')
                 .end(response => {
                     assert.equal(200, response.code);
@@ -38,21 +43,21 @@ describe('Searching', () => {
 
         it('should support limit, embed, etc.', done => {
             let search = {
-                field: 'name',
+                field     : 'name',
                 startsWith: 'Ice Tea'
             };
 
             let or = {
                 field: 'name',
-                eq: 'Mars'
+                eq   : 'Mars'
             };
 
             let or2 = {
                 field: 'name',
-                eq: 'Mars'
+                eq   : 'Mars'
             };
 
-            unirest.get('http://localhost:3006/articles/search?q=' + q(search) + '&or[]=' + q(or) + '&or[]=' + q(or2) + '&limit=1')
+            unirest.get(`http://localhost:3006/articles/search?q=${q(search)}&or[]=${q(or)}&or[]=${q(or2)}&limit=1`)
                 .type('json')
                 .end(response => {
                     assert.equal(200, response.code);
@@ -69,7 +74,7 @@ describe('Searching', () => {
     describe('Incorrect search query', () => {
         it('should refuse when no condition is specified', done => {
             let search = {
-                field: 'name',
+                field : 'name',
                 equals: 'Mars'
             };
 

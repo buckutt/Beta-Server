@@ -10,11 +10,12 @@ let Period = thinky.createModel('Period', {
     createdAt  : type.date().default(new Date()),
     editedAt   : Date,
     isRemoved  : type.boolean().default(false),
-    fundationId: type.string().optional() // Force Thinky to show thoses additional fields that would be cut by enforce_extra
+    // Force Thinky to show thoses additional fields that would be cut by enforce_extra
+    fundationId: type.string().optional()
 }, {
     enforce_missing: true,
-    // enforce_extra: 'remove',
-    // enforce_type: 'strict'
+    enforce_extra  : 'remove',
+    enforce_type   : 'strict'
 });
 
 Period.pre('save', function (next) {

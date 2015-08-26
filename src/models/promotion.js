@@ -8,8 +8,9 @@ let Promotion = thinky.createModel('Promotion', {
     createdAt: type.date().default(new Date()),
     editedAt : Date,
     isRemoved: type.boolean().default(false),
-    priceId  : type.string().optional(), // Force Thinky to show thoses additional fields that would be cut by enforce_extra
-    pointId  : type.string().optional() // Force Thinky to show thoses additional fields that would be cut by enforce_extra
+    // Force Thinky to show thoses additional fields that would be cut by enforce_extra
+    priceId  : type.string().optional(),
+    pointId  : type.string().optional()
 }, {
     enforce_missing: true,
     enforce_extra  : 'remove',

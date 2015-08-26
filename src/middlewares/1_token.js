@@ -14,7 +14,9 @@ const disableAuth = true;
  * @param {Function} next Next middleware
  */
 export default (req, res, next) => {
-    if (disableAuth) { return next(); }
+    if (disableAuth) {
+        return next();
+    }
 
     let secret = config.secret;
 
@@ -50,9 +52,10 @@ export default (req, res, next) => {
         .verifyAsync(token, secret)
         .then(decoded => {
             req.user = decoded;
+
             return next();
         })
-        .catch(err => {
-            return next(new APIError(401, 'Invalid token', err));
-        });
+        .catch(err =>
+            next(new APIError(401, 'Invalid token', err))
+        );
 };

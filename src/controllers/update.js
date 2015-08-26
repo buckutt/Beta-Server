@@ -15,7 +15,7 @@ export default app => {
     let router = new express.Router();
 
     router.put('/:model/:id', (req, res, next) => {
-        let queryLog = req.model + '.get(' + req.params.id + ')';
+        let queryLog = `${req.model}.get(${req.params.id})`;
         log.info(queryLog);
         // First, get the model
         req.model
@@ -27,28 +27,28 @@ export default app => {
                     inst[k] = req.body[k];
                 });
 
-                log.info(req.params.id + '.saveAll()');
+                log.info(`${req.params.id}.saveAll()`);
                 // Save all (including relatives)
                 return inst.save();
             })
-            .then(result => {
-                return res
+            .then(result =>
+                res
                     .status(200)
                     .json(result)
-                    .end();
-            })
-            .catch(thinky.Errors.DocumentNotFound, err => {
-                return next(new APIError(404, 'Document not found', err));
-            })
-            .catch(thinky.Errors.ValidationError, err => {
-                return next(new APIError(400, 'Invalid model', err));
-            })
-            .catch(thinky.Errors.InvalidWrite, err => {
-                return next(new APIError(500, 'Couldn\'t write to disk', err));
-            })
-            .catch(err => {
-                return next(new APIError(500, 'Unknown error', err));
-            });
+                    .end()
+            )
+            .catch(thinky.Errors.DocumentNotFound, err =>
+                next(new APIError(404, 'Document not found', err))
+            )
+            .catch(thinky.Errors.ValidationError, err =>
+                next(new APIError(400, 'Invalid model', err))
+            )
+            .catch(thinky.Errors.InvalidWrite, err =>
+                next(new APIError(500, 'Couldn\'t write to disk', err))
+            )
+            .catch(err =>
+                next(new APIError(500, 'Unknown error', err))
+            );
     });
 
     router.param('model', modelParser);

@@ -67,7 +67,7 @@ describe('Create', function () {
             unirest.post('http://localhost:3006/categories')
                 .type('json')
                 .send({
-                    name: 'Barres',
+                    name: 'Barres'
                 })
                 .end(response => {
                     assert.equal('string', typeof response.body.id);
@@ -80,7 +80,8 @@ describe('Create', function () {
             unirest.post('http://localhost:3006/devices')
                 .type('json')
                 .send({
-                    name: 'eeetop-1',
+                    name       : 'eeetop-1',
+                    fingerprint: '43:51:43:a1:b5:fc:8b:b7:0a:3a:a9:b1:0f:66:73:a8'
                 })
                 .end(response => {
                     assert.equal('string', typeof response.body.id);
@@ -95,7 +96,7 @@ describe('Create', function () {
                 .send({
                     name   : 'UNG',
                     website: 'http://ung.utt.fr',
-                    mail   : 'ung@utt.fr',
+                    mail   : 'ung@utt.fr'
                 })
                 .end(response => {
                     UNG = response.body;
@@ -125,7 +126,7 @@ describe('Create', function () {
                 .type('json')
                 .send({
                     type: 'mail_etu',
-                    data: 'gabriel.juchault@gmail.com',
+                    data: 'gabriel.juchault@gmail.com'
                 })
                 .end(response => {
                     assert.equal('string', typeof response.body.id);
@@ -140,7 +141,7 @@ describe('Create', function () {
                 .send({
                     name : 'Just now',
                     start: new Date(),
-                    end  : new Date(),
+                    end  : new Date()
                 })
                 .end(response => {
                     assert.equal('string', typeof response.body.id);
@@ -153,7 +154,7 @@ describe('Create', function () {
             unirest.post('http://localhost:3006/points')
                 .type('json')
                 .send({
-                    name: 'Foyer',
+                    name: 'Foyer'
                 })
                 .end(response => {
                     Foyer = response.body;
@@ -167,7 +168,7 @@ describe('Create', function () {
             unirest.post('http://localhost:3006/prices')
                 .type('json')
                 .send({
-                    amount: 3.141592654,
+                    amount: 3.141592654
                 })
                 .end(response => {
                     assert.equal('string', typeof response.body.id);
@@ -180,7 +181,7 @@ describe('Create', function () {
             unirest.post('http://localhost:3006/promotions')
                 .type('json')
                 .send({
-                    name: 'Formule 1€',
+                    name: 'Formule 1€'
                 })
                 .end(response => {
                     Formule1Euro = response.body;
@@ -228,7 +229,7 @@ describe('Create', function () {
                     pin      : '1234',
                     password : '1234',
                     mail     : 'gabriel.juchault@utt.fr',
-                    credit   : 150,
+                    credit   : 150
                 })
                 .end(response => {
                     GJ = response.body;
@@ -244,7 +245,7 @@ describe('Create', function () {
                             pin      : '1234',
                             password : '1234',
                             mail     : 'thomas.chauchefoin@utt.fr',
-                            credit   : 150,
+                            credit   : 150
                         })
                         .end(response => {
                             TC = response.body;
@@ -264,7 +265,10 @@ describe('Create', function () {
                     buyerId    : GJ.id,
                     sellerId   : TC.id,
                     promotionId: Formule1Euro.id,
-                    articles   : [ IceTeaPeche.id, KinderDelice.id ]
+                    articles   : [
+                        IceTeaPeche.id,
+                        KinderDelice.id
+                    ]
                 })
                 .end(response => {
                     assert.equal('string', typeof response.body.id);

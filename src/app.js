@@ -51,7 +51,7 @@ controllers.forEach(controller => {
 
 // Service controllers subrouters
 let services = fs
-    .readdirSync(path.join(config.root, 'contorllers/', 'services/'))
+    .readdirSync(path.join(config.root, 'controllers/', 'services/'))
     .filter(f => f.slice(-3) === '.js')
     .sort()
     .map(f => require(path.join(config.root, 'controllers/', 'services/', f)));
@@ -71,14 +71,14 @@ app.use((err, req, res, next) => { // jshint ignore:line
         // Classic errors
         if (err instanceof Error) {
             err = {
-                status: 500,
+                status : 500,
                 message: err.message,
                 details: err
             };
         } else {
             // Unknown errors
             err = {
-                status: 500,
+                status : 500,
                 message: err.toString(),
                 details: err
             };
@@ -87,7 +87,9 @@ app.use((err, req, res, next) => { // jshint ignore:line
 
     log.error(err.message);
 
-    if (err.message === 'Unknown error') { console.log(pp(err)); }
+    if (err.message === 'Unknown error') {
+        console.log(pp(err));
+    }
 
     res
         .status(err.status || 500)

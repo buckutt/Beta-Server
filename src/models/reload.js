@@ -9,9 +9,10 @@ let Reload = thinky.createModel('Reload', {
     createdAt: type.date().default(new Date()),
     editedAt : Date,
     isRemoved: type.boolean().default(false),
-    pointId  : type.string().optional(), // Force Thinky to show thoses additional fields that would be cut by enforce_extra
-    buyerId  : type.string().optional(), // Force Thinky to show thoses additional fields that would be cut by enforce_extra
-    sellerId : type.string().optional() // Force Thinky to show thoses additional fields that would be cut by enforce_extra
+    // Force Thinky to show thoses additional fields that would be cut by enforce_extra
+    pointId  : type.string().optional(),
+    buyerId  : type.string().optional(),
+    sellerId : type.string().optional()
 }, {
     enforce_missing: true,
     enforce_extra  : 'remove',

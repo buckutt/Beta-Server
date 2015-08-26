@@ -27,6 +27,7 @@ export default app => {
                 let [instData, leftKeysExtracted] = relationsHelper.sanitize(req.model, data);
                 let newInst = new req.model(instData);
                 relationsHelper.restore(newInst, leftKeysExtracted);
+
                 return newInst;
             });
             queryLog += req.body.map(data => pp(data)).join(',');
@@ -37,11 +38,18 @@ export default app => {
             let [data, leftKeysExtracted] = relationsHelper.sanitize(req.model, req.body);
             let newInst = new req.model(data);
             relationsHelper.restore(newInst, leftKeysExtracted);
-            insts = [ newInst ];
+            insts = [newInst];
         }
 
-        let allDone = insts.map(inst => inst.saveAll(req.query.embed));
-        queryLog += '.saveAll(' + pp(req.query.embed) + ') (length: ' + allDone.length + ')';
+        let allDone;
+
+        if (req.query.embed) {
+            allDone = insts.map(inst => inst.saveAll(req.query.embed));
+            queryLog += `.saveAll(${pp(req.query.embed)}) (length: ${allDone.length})`;
+        } else {
+            allDone = insts.map(inst => inst.save());
+            queryLog += `.save() (length: ${allDone.length})`;
+        }
 
         log.info(queryLog);
         Promise.all(allDone)
@@ -65,15 +73,15 @@ export default app => {
                     .json(results)
                     .end();
             })
-            .catch(thinky.Errors.ValidationError, err => {
-                return next(new APIError(400, 'Invalid model', err));
-            })
-            .catch(thinky.Errors.InvalidWrite, err => {
-                return next(new APIError(500, 'Couldn\'t write to disk', err));
-            })
-            .catch(err => {
-                return next(new APIError(500, 'Unknown error', err));
-            });
+            .catch(thinky.Errors.ValidationError, err =>
+                next(new APIError(400, 'Invalid model', err))
+            )
+            .catch(thinky.Errors.InvalidWrite, err =>
+                next(new APIError(500, 'Couldn\'t write to disk', err))
+            )
+            .catch(err =>
+                next(new APIError(500, 'Unknown error', err))
+            );
     });
 
     router.param('model', modelParser);

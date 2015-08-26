@@ -9,7 +9,7 @@ function isInt (n) {
 
 /**
  * Validates booleans
- * @param  {String|Number|Boolean} b The booleans
+ * @param  {String|Number|Boolean} b The boolean
  * @return {Boolean} True if b is an integer, false otherwise
  */
 function isBool (b) {
@@ -23,6 +23,7 @@ function isBool (b) {
  */
 function pad2 (n) {
     let str = n + '';
+
     return (str.length === 1) ? '0' + str : str;
 }
 
@@ -32,7 +33,10 @@ function pad2 (n) {
  * @return {String} The result colored string
  */
 function pp (obj) {
-    return require('util').inspect(obj, { showHidden: true, colors: true });
+    return require('util').inspect(obj, {
+        showHidden: true,
+        colors    : true
+    });
 }
 
 /**
@@ -41,7 +45,7 @@ function pp (obj) {
  * @return {Mixed} The same object, but different reference
  */
 function clone (obj) {
-    if (obj === null || typeof obj !== 'object') {
+    if (obj === null || typeof obj !== 'object') {
         return obj;
     }
 

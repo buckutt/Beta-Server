@@ -28,7 +28,7 @@ describe('Update', () => {
                         .type('json')
                         .send({
                             name: 'Updated name',
-                            foo: 'bar'
+                            foo : 'bar'
                         })
                         .end(response => {
                             assert.equal(200, response.code);
