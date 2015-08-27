@@ -2,6 +2,21 @@ import assert  from 'assert';
 import unirest from 'unirest';
 
 /**
+ * Automatically adds bearer
+ * @param  {String[]} methods Methods
+ */
+function automaticHeader (methods) {
+    methods.forEach(method => {
+        let previous_ = unirest[method];
+        unirest[method] = (...args) => {
+            return previous_(...args)
+                .header('Authorization', `Bearer ${process.env.TOKEN}`);
+        };
+    });
+}
+automaticHeader(['get', 'post', 'put', 'delete']);
+
+/**
  * Encodes a search string
  * @param  {Object} obj A search object
  * @return {String} The URL compatible search

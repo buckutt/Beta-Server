@@ -8,23 +8,23 @@ var rimraf  = require('rimraf');
 
 var jshintConfig = {
     bitwise: true,
-    curly: true,
-    eqeqeq: true,
-    forin: true,
-    freeze: true,
+    curly  : true,
+    eqeqeq : true,
+    forin  : true,
+    freeze : true,
     latedef: true,
-    noarg: true,
-    shadow: 'inner',
-    undef: true,
-    unused: true,
+    noarg  : true,
+    shadow : 'inner',
+    undef  : true,
+    unused : true,
     varstmt: true,
-    eqnull: true,
+    eqnull : true,
 
-    esnext: true,
-    devel: true,
-    mocha: true,
-    module: true,
-    node: true
+    esnext : true,
+    devel  : true,
+    mocha  : true,
+    module : true,
+    node   : true
 };
 
 gulp.task('clean', function (cb) {

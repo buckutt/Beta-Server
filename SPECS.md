@@ -42,3 +42,10 @@
       category except Redbull) and a bar. New table to be made : Set, and promotions should be treated with sets and no
       more categories
     - A reload should be in the bucket to be cancelable, and all the bucket should be treated in one request
+* Login :
+    - JWT should be revocated when rights are updated. One solution should be to make tables with jwt stored, and check
+    the supplied token is in the database. Lot of implementation needed, especially for the jwt automatic expiration.
+    The other solution, the classic way, is that the token should contain only id, and fetch the rights on every request
+    instead of fetching tokens on every request. Be careful, there was a difference between rights stored and rights
+    used (req.user.rights) as used rights are filtred (based on pin/password and right expiration)
+    - Do not use failedAuth => use haproxy/nginx/iptables to do that

@@ -100,4 +100,6 @@ export default app => {
                     .end()
             );
     });
+
+    app.use(router);
 };

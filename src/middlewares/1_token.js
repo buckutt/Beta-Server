@@ -5,7 +5,7 @@ import config   from '../config';
 
 Promise.promisifyAll(jwt);
 
-const disableAuth = true;
+const disableAuth = false;
 
 /**
  * Parses the client token
@@ -21,7 +21,7 @@ export default (req, res, next) => {
     let secret = config.secret;
 
     // Login : no token required
-    if (req.url === '/api/services/login') {
+    if (req.url === '/services/login') {
         return next();
     }
 
@@ -48,14 +48,51 @@ export default (req, res, next) => {
         return next(new APIError(400, 'Scheme is `Bearer`. Header format is Authorization: Bearer [token]'));
     }
 
+    let connectType;
+
+    const pinLoggingAllowed = req.app.locals.config.pinLoggingAllowed;
+    const now               = Date.now();
+
     jwt
         .verifyAsync(token, secret)
         .then(decoded => {
-            req.user = decoded;
+            let userId  = decoded.id;
+            connectType = decoded.connectType;
+
+            return req.app.locals.models.User.get(userId).getJoin({
+                rights: {
+                    period: true
+                }
+            });
+        })
+        .then(user => {
+            req.user = user;
+
+            req.user.rights = req.user.rights
+                .map(right => {
+                    // If pin is not allowed with this right, pass
+                    if (connectType === 'pin' && pinLoggingAllowed.indexOf(right.name) === -1) {
+                        return null;
+                    }
+
+                    if (right.period.start <= now && right.period.end > now) {
+                        return right;
+                    } else {
+                        // This right should not be added as it is over
+                        return null;
+                    }
+                })
+                .filter(right => right !== null);
 
             return next();
         })
-        .catch(err =>
+        .catch(jwt.TokenExpiredError, err =>
+            next(new APIError(401, 'Token expired', err))
+        )
+        .catch(jwt.JsonWebTokenError, err =>
             next(new APIError(401, 'Invalid token', err))
-        );
+        )
+        .catch(err => {
+            console.log(err);
+        });
 };

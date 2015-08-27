@@ -57,31 +57,31 @@ let config = {
     },
 
     test       : {
-        root            : rootPath,
-        secret          : secret,
-        rightsManagement: rightsManagement,
-        pinManagement   : pinLoggingAllowed,
-        level           : 'debug',
-        port            : 3006,
-        app             : {
+        root             : rootPath,
+        secret           : secret,
+        rightsManagement : rightsManagement,
+        pinLoggingAllowed: pinLoggingAllowed,
+        level            : 'debug',
+        port             : 3006,
+        app              : {
             name: 'buckuttServer'
         },
-        db              : {
+        db               : {
             db: 'buckuttServer_test'
         }
     },
 
     production : {
-        root            : rootPath,
-        secret          : secret,
-        rightsManagement: rightsManagement,
-        pinManagement   : pinLoggingAllowed,
-        port            : 3000,
-        level           : 'info',
-        app             : {
+        root             : rootPath,
+        secret           : secret,
+        rightsManagement : rightsManagement,
+        pinLoggingAllowed: pinLoggingAllowed,
+        port             : 3000,
+        level            : 'info',
+        app              : {
             name: 'buckuttServer'
         },
-        db              : {
+        db               : {
             db: 'buckuttServer_production'
         }
     }

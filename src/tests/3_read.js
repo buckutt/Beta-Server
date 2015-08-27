@@ -5,6 +5,21 @@ import unirest   from 'unirest';
 let firstArticle;
 let totalArticles;
 
+/**
+ * Automatically adds bearer
+ * @param  {String[]} methods Methods
+ */
+function automaticHeader (methods) {
+    methods.forEach(method => {
+        let previous_ = unirest[method];
+        unirest[method] = (...args) => {
+            return previous_(...args)
+                .header('Authorization', `Bearer ${process.env.TOKEN}`);
+        };
+    });
+}
+automaticHeader(['get', 'post', 'put', 'delete']);
+
 describe('Read', () => {
     describe('Correct id', () => {
         it('should list correctly the model', done => {

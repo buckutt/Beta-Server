@@ -9,6 +9,21 @@ let Foyer;
 let GJ;
 let TC;
 
+/**
+ * Automatically adds bearer
+ * @param  {String[]} methods Methods
+ */
+function automaticHeader (methods) {
+    methods.forEach(method => {
+        let previous_ = unirest[method];
+        unirest[method] = (...args) => {
+            return previous_(...args)
+                .header('Authorization', `Bearer ${process.env.TOKEN}`);
+        };
+    });
+}
+automaticHeader(['get', 'post', 'put', 'delete']);
+
 describe('Create', function () {
     this.timeout(20 * 1000); // First request creates the tables
 
@@ -27,9 +42,9 @@ describe('Create', function () {
                     }
                 ])
                 .end(response => {
+                    assert.equal(200, response.code);
                     IceTeaPeche = response.body[0];
                     assert.equal(2, response.body.length);
-                    assert.equal(200, response.code);
                     done();
                 });
         });
@@ -42,8 +57,8 @@ describe('Create', function () {
                     stock: 0
                 })
                 .end(response => {
-                    assert.equal('string', typeof response.body.id);
                     assert.equal(200, response.code);
+                    assert.equal('string', typeof response.body.id);
                     done();
                 });
         });
@@ -56,9 +71,9 @@ describe('Create', function () {
                     stock: 0
                 })
                 .end(response => {
+                    assert.equal(200, response.code);
                     KinderDelice = response.body;
                     assert.equal('string', typeof response.body.id);
-                    assert.equal(200, response.code);
                     done();
                 });
         });
@@ -70,8 +85,8 @@ describe('Create', function () {
                     name: 'Barres'
                 })
                 .end(response => {
-                    assert.equal('string', typeof response.body.id);
                     assert.equal(200, response.code);
+                    assert.equal('string', typeof response.body.id);
                     done();
                 });
         });
@@ -84,8 +99,8 @@ describe('Create', function () {
                     fingerprint: '43:51:43:a1:b5:fc:8b:b7:0a:3a:a9:b1:0f:66:73:a8'
                 })
                 .end(response => {
-                    assert.equal('string', typeof response.body.id);
                     assert.equal(200, response.code);
+                    assert.equal('string', typeof response.body.id);
                     done();
                 });
         });
@@ -100,8 +115,8 @@ describe('Create', function () {
                 })
                 .end(response => {
                     UNG = response.body;
-                    assert.equal('string', typeof response.body.id);
                     assert.equal(200, response.code);
+                    assert.equal('string', typeof response.body.id);
                     done();
                 });
         });
@@ -115,8 +130,8 @@ describe('Create', function () {
                     isPublic: false
                 })
                 .end(response => {
-                    assert.equal('string', typeof response.body.id);
                     assert.equal(200, response.code);
+                    assert.equal('string', typeof response.body.id);
                     done();
                 });
         });
@@ -125,12 +140,12 @@ describe('Create', function () {
             unirest.post('http://localhost:3006/meansoflogins')
                 .type('json')
                 .send({
-                    type: 'mail_etu',
+                    type: 'etuMail',
                     data: 'gabriel.juchault@gmail.com'
                 })
                 .end(response => {
-                    assert.equal('string', typeof response.body.id);
                     assert.equal(200, response.code);
+                    assert.equal('string', typeof response.body.id);
                     done();
                 });
         });
@@ -144,8 +159,8 @@ describe('Create', function () {
                     end  : new Date()
                 })
                 .end(response => {
-                    assert.equal('string', typeof response.body.id);
                     assert.equal(200, response.code);
+                    assert.equal('string', typeof response.body.id);
                     done();
                 });
         });
@@ -158,8 +173,8 @@ describe('Create', function () {
                 })
                 .end(response => {
                     Foyer = response.body;
-                    assert.equal('string', typeof response.body.id);
                     assert.equal(200, response.code);
+                    assert.equal('string', typeof response.body.id);
                     done();
                 });
         });
@@ -171,8 +186,8 @@ describe('Create', function () {
                     amount: 3.141592654
                 })
                 .end(response => {
-                    assert.equal('string', typeof response.body.id);
                     assert.equal(200, response.code);
+                    assert.equal('string', typeof response.body.id);
                     done();
                 });
         });
@@ -185,8 +200,8 @@ describe('Create', function () {
                 })
                 .end(response => {
                     Formule1Euro = response.body;
-                    assert.equal('string', typeof response.body.id);
                     assert.equal(200, response.code);
+                    assert.equal('string', typeof response.body.id);
                     done();
                 });
         });
@@ -199,8 +214,8 @@ describe('Create', function () {
                     credit: 50
                 })
                 .end(response => {
-                    assert.equal('string', typeof response.body.id);
                     assert.equal(200, response.code);
+                    assert.equal('string', typeof response.body.id);
                     done();
                 });
         });
@@ -213,8 +228,8 @@ describe('Create', function () {
                     isAdmin: true
                 })
                 .end(response => {
-                    assert.equal('string', typeof response.body.id);
                     assert.equal(200, response.code);
+                    assert.equal('string', typeof response.body.id);
                     done();
                 });
         });
@@ -232,9 +247,9 @@ describe('Create', function () {
                     credit   : 150
                 })
                 .end(response => {
+                    assert.equal(200, response.code);
                     GJ = response.body;
                     assert.equal('string', typeof response.body.id);
-                    assert.equal(200, response.code);
 
                     unirest.post('http://localhost:3006/users')
                         .type('json')
@@ -248,9 +263,9 @@ describe('Create', function () {
                             credit   : 150
                         })
                         .end(response => {
+                            assert.equal(200, response.code);
                             TC = response.body;
                             assert.equal('string', typeof response.body.id);
-                            assert.equal(200, response.code);
                             done();
                         });
                 });
@@ -271,10 +286,10 @@ describe('Create', function () {
                     ]
                 })
                 .end(response => {
+                    assert.equal(200, response.code);
                     assert.equal('string', typeof response.body.id);
                     assert.equal(2, response.body.articles.length);
                     assert.equal(Formule1Euro.id, response.body.promotion.id);
-                    assert.equal(200, response.code);
                     done();
                 });
         });
@@ -288,8 +303,8 @@ describe('Create', function () {
                     foo  : 'bar'
                 })
                 .end(response => {
-                    assert.equal('string', typeof response.body.id);
                     assert.equal(200, response.code);
+                    assert.equal('string', typeof response.body.id);
                     assert.equal(false, response.body.hasOwnProperty('foo'));
                     done();
                 });

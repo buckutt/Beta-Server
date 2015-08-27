@@ -1,6 +1,6 @@
 import APIError from '../APIError';
 
-const disableAuth = true;
+const disableAuth = false;
 
 /**
  * Check for the current user wether he can do what he wants
@@ -11,36 +11,43 @@ const disableAuth = true;
 export default (req, res, next) => {
     let authorize = req.app.locals.config.rightsManagement;
 
+
     if (disableAuth) {
         return next();
     }
 
-    if (req.url === '/api/services/login') {
+    if (req.url === '/services/login') {
         return next();
     }
 
     let rights = req.user.rights || [];
     let url    = req.path;
     let method = req.method;
-    let now    = Date.now();
+
+    let handled = false;
 
     rights.forEach(right => {
-        // The right is still valid
-        if (Date.parse(right.end) > now) {
-            // Admin/Treasurer : he does whatever he wants
-            if (authorize.all.indexOf(right.name) > -1) {
-                return next();
-            }
+        // Admin/Treasurer : he does whatever he wants
+        if (authorize.all.indexOf(right.name) > -1) {
+            handled = true;
 
-            // Get : check for read authorizations
-            // Post/Put/Delete : check for write authorizations
-            if (method === 'get' && authorize[right.name].read.indexOf(url) > -1) {
-                return next();
-            } else if (authorize[right.name].write.indexOf(url) > -1) {
-                return next();
-            }
+            return next();
+        }
+
+        // Get : check for read authorizations
+        // Post/Put/Delete : check for write authorizations
+        if (method === 'get' && authorize[right.name].read.indexOf(url) > -1) {
+            handled = true;
+
+            return next();
+        } else if (authorize[right.name].write.indexOf(url) > -1) {
+            handled = true;
+
+            return next();
         }
     });
 
-    return next(new APIError(401, 'Unauthorized'));
+    if (!handled) {
+        return next(new APIError(401, 'Unauthorized'));
+    }
 };

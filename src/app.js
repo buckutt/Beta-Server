@@ -27,6 +27,13 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(compression());
 
+// Set application into the request
+app.use((req, res, next) => {
+    req.app = app;
+
+    return next();
+});
+
 // Application middlewares
 let middlewares = fs
     .readdirSync(path.join(config.root, 'middlewares/'))
@@ -99,6 +106,7 @@ app.use((err, req, res, next) => { // jshint ignore:line
 
 // Start the application
 if (require.main === module) {
+    console.log('LISTEN');
     app.listen(config.port, () => {
         log.info('Server is listening on port %d', config.port);
         log.warn('Please wait for models to be ready...');

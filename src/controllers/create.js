@@ -20,6 +20,8 @@ export default app => {
         let insts;
         let queryLog = '';
 
+        console.log('BBBBBBBBBBBBBBBBBB');
+
         if (Array.isArray(req.body)) {
             // Multiple instances
             queryLog += '[';

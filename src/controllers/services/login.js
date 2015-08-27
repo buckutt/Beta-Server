@@ -11,34 +11,40 @@ const bcrypt = Promise.promisifyAll(bcrypt_);
 let log      = logger(module);
 
 export default app => {
-    let models = app.models;
+    let models = app.locals.models;
     let router = express.Router();
 
-    const pinLoggingAllowed = app.locals.config.pinLoggingAllowed;
     const secret            = app.locals.config.secret;
     const tokenOptions      = {
         expiresInMinutes: 1440
     };
 
     router.post('/services/login', (req, res, next) => {
-        const now = Date.now();
-
         if (!req.body.meanOfLogin) {
             return next(new APIError(401, 'No meanOfLogin provided'));
         }
 
-        if (!req.body.password || !req.body.pin) {
+        if (!req.body.data) {
+            return next(new APIError(401, 'No (meanOfLogin) data provided'));
+        }
+
+        if (!req.body.password && !req.body.pin) {
             return next(new APIError(401, 'No password nor pin provided'));
         }
 
-        if (req.body.password  && req.body.pin) {
+        if (req.body.password && req.body.pin) {
             return next(new APIError(401, 'Password and pin provided'));
         }
 
-        let connectType = (req.body.pin && req.body.pin.length > 0) ? 'pin' : 'password';
+        let connectType = (req.body.hasOwnProperty('pin')) ? 'pin' : 'password';
         let user;
 
-        let queryLog = models.MeanOfLogin + '.get(' + req.body.meanOfLogin + ').getAll(' + pp({
+        let queryLog = `${models.MeanOfLogin}
+            .filter({
+                type: ${req.body.meanOfLogin},
+                data: ${req.body.data}
+            })
+            .limit(1).getJoin(` + pp({
             user: {
                 rights: {
                     period: true
@@ -47,7 +53,12 @@ export default app => {
         }) + ')';
         log.info(queryLog);
 
-        models.MeanOfLogin.get(req.body.meanOfLogin)
+        models.MeanOfLogin
+            .filter({
+                type: req.body.meanOfLogin,
+                data: req.body.data
+            })
+            .limit(1)
             .getJoin({
                 user: {
                     rights: {
@@ -56,50 +67,28 @@ export default app => {
                 }
             })
             .then(mol => {
-                user = mol.user;
+                if (mol.length === 0) {
+                    return next(new APIError(404, 'Unknown user'));
+                }
+
+                user = mol[0].user;
 
                 if (connectType === 'pin') {
-                    return bcrypt.compareAsync(req.body.pin, mol.user.pin);
+                    return bcrypt.compareAsync(req.body.pin.toString(), user.pin);
                 } else {
-                    return bcrypt.compareAsync(req.body.password, mol.user.password);
+                    return bcrypt.compareAsync(req.body.password, user.password);
                 }
             })
             .then(match =>
                 new Promise((resolve, reject) => {
                     if (match) {
-                        resolve();
+                        return resolve();
                     } else {
                         return reject(new APIError(401, 'Wrong password'));
                     }
                 })
             )
-            .then(() =>
-                user.rights
-                    .map(right => {
-                        // If pin is not allowed with this right, pass
-                        if (connectType === 'pin' && pinLoggingAllowed.indexOf(right.name) === -1) {
-                            return null;
-                        }
-
-                        if (right.period.start <= now && right.period.end > now) {
-                            return right;
-                        } else {
-                            // This right should not be added as it is over
-                            return null;
-                        }
-                    })
-                    .filter(right => right !== null)
-            )
-            .then(newRights =>
-                new Promise((resolve, reject) => {
-                    if (newRights.length === 0) {
-                        return reject(new APIError(401, 'No valid right found'));
-                    }
-
-                    resolve(newRights);
-                })
-            )
-            .then(rights => {
+            .then(() => {
                 delete user.pin;
                 delete user.password;
 
@@ -108,7 +97,9 @@ export default app => {
                     .json({
                         user,
                         token: jwt.sign({
-                            rights
+                            id: user.id,
+                            // Will be used by middleware (else how could middleware know if pin or password ?)
+                            connectType
                         }, secret, tokenOptions)
                     })
                     .end();
@@ -118,4 +109,6 @@ export default app => {
                 next(new APIError(404, 'User not found', err))
             );
     });
+
+    app.use(router);
 };
