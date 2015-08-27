@@ -4,3 +4,5 @@ app/
 rethinkdb_data/
 db.mwb.bak
 npm-debug.log
+cert.pem
+key.pem
