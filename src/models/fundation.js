@@ -27,7 +27,6 @@ Fundation.ensureIndex('editedAt');
 
 Fundation.associate = models => {
     models.Fundation.hasMany(models.Group, 'groups', 'id', 'fundationId');
-    models.Fundation.hasMany(models.Period, 'periods', 'id', 'fundationId');
     models.Fundation.hasMany(models.Price, 'prices', 'id', 'fundationId');
     models.Fundation.hasMany(models.Purchase, 'purchases', 'id', 'fundationId');
 };
