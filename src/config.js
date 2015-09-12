@@ -5,7 +5,7 @@ let rootPath = path.normalize(__dirname);
 let env      = process.env.NODE_ENV || 'development';
 
 let rightsManagement = {
-    all     : ['admin', 'seller'],
+    all     : ['admin'],
     seller  : {
         read : [
             '/api/articles',
