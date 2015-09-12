@@ -1,20 +1,21 @@
-import assert  from 'assert';
-import unirest from 'unirest';
+import assert from 'assert';
+
+/* global unirest */
 
 describe('Delete', () => {
     describe('Correct id', () => {
         it('should delete correctly the model', done => {
-            unirest.get('http://localhost:3006/articles')
+            unirest.get('https://localhost:3006/articles')
                 .type('json')
                 .end(response => {
-                    let id = response.body[0].id;
-                    unirest.delete('http://localhost:3006/articles/' + id + '/')
+                    let id = response.body[1].id;
+                    unirest.delete('https://localhost:3006/articles/' + id + '/')
                         .type('json')
                         .end(response => {
                             assert.equal(200, response.code);
 
                             // Check if the article was really deleted
-                            unirest.get('http://localhost:3006/articles/' + id + '/')
+                            unirest.get('https://localhost:3006/articles/' + id + '/')
                                 .type('json')
                                 .end(response => {
                                     assert.equal(404, response.code);
@@ -26,24 +27,26 @@ describe('Delete', () => {
         });
 
         it('should delete correctly the model and its relatives with ?embed=modelA,modelB', done => {
-            unirest.get('http://localhost:3006/purchases?embed=promotion')
+            unirest.get('https://localhost:3006/purchases?embed=promotion')
                 .type('json')
                 .end(response => {
+                    response.body = response.body.filter(purchase => purchase.hasOwnProperty('promotion'));
+
                     let id          = response.body[0].id;
                     let promotionId = response.body[0].promotion.id;
-                    unirest.delete('http://localhost:3006/purchases/' + id + '/?embed=promotion')
+                    unirest.delete('https://localhost:3006/purchases/' + id + '/?embed=promotion')
                         .type('json')
                         .end(response => {
                             assert.equal(200, response.code);
 
                             // Check if the purchase was really deleted
-                            unirest.get('http://localhost:3006/purchases/' + id + '/')
+                            unirest.get('https://localhost:3006/purchases/' + id + '/')
                                 .type('json')
                                 .end(response => {
                                     assert.equal(404, response.code);
 
                                     // Check if the promotion was really deleted
-                                    unirest.get('http://localhost:3006/promotions/' + promotionId + '/')
+                                    unirest.get('https://localhost:3006/promotions/' + promotionId + '/')
                                         .type('json')
                                         .end(response => {
                                             assert.equal(404, response.code);
@@ -57,7 +60,7 @@ describe('Delete', () => {
 
     describe('Incorrect id', () => {
         it('should not delete if id is non-existant', done => {
-            unirest.delete('http://localhost:3006/articles/00000000-0000-1000-8000-000000000000')
+            unirest.delete('https://localhost:3006/articles/00000000-0000-1000-8000-000000000000')
                 .type('json')
                 .end(response => {
                     assert.equal(404, response.code);
@@ -67,7 +70,7 @@ describe('Delete', () => {
         });
 
         it('should not delete if the id is not a guid', done => {
-            unirest.delete('http://localhost:3006/articles/foo')
+            unirest.delete('https://localhost:3006/articles/foo')
                 .type('json')
                 .end(response => {
                     assert.equal(400, response.code);
