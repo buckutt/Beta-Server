@@ -1,3 +1,4 @@
+// Return the parsed query parameter from the raw one
 const queryRules = {
     limit  : limit  => parseInt(limit, 10),
     offset : offset => parseInt(offset, 10),
