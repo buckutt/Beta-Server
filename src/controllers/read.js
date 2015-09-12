@@ -1,9 +1,9 @@
 import APIError    from '../APIError';
 import idParser    from '../lib/idParser';
-import modelParser from '../lib/modelParser';
-import { pp }      from '../lib/utils';
 import logger      from '../log';
+import modelParser from '../lib/modelParser';
 import thinky      from '../thinky';
+import { pp }      from '../lib/utils';
 import express     from 'express';
 
 let r   = thinky.r;
@@ -50,7 +50,7 @@ export default app => {
                 .catch(err =>
                     next(new APIError(500, 'Unknown error', err))
                 );
-        } else {
+        } else {
             // List instances
             let request = req.model;
             let queryLog = req.model;

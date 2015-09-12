@@ -13,12 +13,12 @@ function isInt (n) {
  * @return {Boolean} True if b is an integer, false otherwise
  */
 function isBool (b) {
-    return b === '1' || b === 1 || b === 'true' || b === true;
+    return b === '1' || b === 1 || b === 'true' || b === true;
 }
 
 /**
  * Pads a string if inferior to 10
- * @param  {String|Number} n The numeric value
+ * @param  {String|Number} n The numeric value
  * @return {String} The padded number
  */
 function pad2 (n) {
@@ -57,4 +57,4 @@ function clone (obj) {
     return result;
 }
 
-export { isInt, isBool, pad2, pp, clone };
+export { isInt, isBool, pad2, pp, clone };

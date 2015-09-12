@@ -1,7 +1,7 @@
-import Promise  from 'bluebird';
-import jwt      from 'jsonwebtoken';
 import APIError from '../APIError';
 import config   from '../config';
+import jwt      from 'jsonwebtoken';
+import Promise  from 'bluebird';
 
 Promise.promisifyAll(jwt);
 
@@ -91,8 +91,5 @@ export default (req, res, next) => {
         )
         .catch(jwt.JsonWebTokenError, err =>
             next(new APIError(401, 'Invalid token', err))
-        )
-        .catch(err => {
-            console.log(err);
-        });
+        );
 };

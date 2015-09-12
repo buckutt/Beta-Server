@@ -2,10 +2,10 @@ import APIError from '../../APIError';
 import logger   from '../../log';
 import thinky   from '../../thinky';
 import { pp }   from '../../lib/utils';
-import express  from 'express';
-import Promise  from 'bluebird';
-import jwt      from 'jsonwebtoken';
 import bcrypt_  from 'bcryptjs';
+import express  from 'express';
+import jwt      from 'jsonwebtoken';
+import Promise  from 'bluebird';
 
 const bcrypt = Promise.promisifyAll(bcrypt_);
 let log      = logger(module);

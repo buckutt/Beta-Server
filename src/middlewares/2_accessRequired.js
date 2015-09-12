@@ -11,7 +11,6 @@ const disableAuth = false;
 export default (req, res, next) => {
     let authorize = req.app.locals.config.rightsManagement;
 
-
     if (disableAuth) {
         return next();
     }
@@ -20,7 +19,7 @@ export default (req, res, next) => {
         return next();
     }
 
-    let rights = req.user.rights || [];
+    let rights = req.user.rights || [];
     let url    = req.path;
     let method = req.method;
 

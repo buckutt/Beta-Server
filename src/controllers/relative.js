@@ -1,9 +1,9 @@
 import APIError    from '../APIError';
 import idParser    from '../lib/idParser';
-import modelParser from '../lib/modelParser';
-import { pp }      from '../lib/utils';
 import logger      from '../log';
+import modelParser from '../lib/modelParser';
 import thinky      from '../thinky';
+import { pp }      from '../lib/utils';
 import express     from 'express';
 
 let log = logger(module);

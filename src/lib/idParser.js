@@ -10,9 +10,9 @@ const uuid = /[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f
  * @param {String}   value The query value
  */
 function id (req, res, next, value) {
-    if (uuid.test(value) || value === 'search') {
+    if (uuid.test(value) || value === 'search') {
         return next();
-    } else {
+    } else {
         return next(new APIError(400, 'id is not a guid/uuid'));
     }
 }

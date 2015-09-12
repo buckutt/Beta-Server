@@ -1,4 +1,4 @@
-import { clone } from './utils';
+import { clone } from './utils';
 
 /**
  * Extracts relations from JSON data. Useful to insert them later (with restore) to user Thinky's setters

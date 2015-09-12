@@ -1,9 +1,9 @@
 import APIError        from '../APIError';
+import logger          from '../log';
 import modelParser     from '../lib/modelParser';
 import relationsHelper from '../lib/relationsHelper';
-import { pp }          from '../lib/utils';
 import thinky          from '../thinky';
-import logger          from '../log';
+import { pp }          from '../lib/utils';
 import express         from 'express';
 import Promise         from 'bluebird';
 
@@ -20,8 +20,6 @@ export default app => {
         let insts;
         let queryLog = '';
 
-        console.log('BBBBBBBBBBBBBBBBBB');
-
         if (Array.isArray(req.body)) {
             // Multiple instances
             queryLog += '[';
@@ -37,7 +35,7 @@ export default app => {
         } else {
             // Only one instance
             queryLog += pp(req.body);
-            let [data, leftKeysExtracted] = relationsHelper.sanitize(req.model, req.body);
+            let [data, leftKeysExtracted] = relationsHelper.sanitize(req.model, req.body);
             let newInst = new req.model(data);
             relationsHelper.restore(newInst, leftKeysExtracted);
             insts = [newInst];
