@@ -28,6 +28,7 @@
     "jsonwebtoken": "^5.0.5",
     "morgan": "1.6.1",
     "qs": "4.0.0",
+    "sync-exec": "^0.6.2",
     "thinky": "^2.1.6",
     "unirest": "git://github.com/nguyenchr/unirest-nodejs.git#fix-json-array",
     "winston": "1.0.1"

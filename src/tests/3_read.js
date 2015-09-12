@@ -1,6 +1,7 @@
-import { clone } from '../lib/utils';
+import { clone } from '../lib/utils';
 import assert    from 'assert';
-import unirest   from 'unirest';
+
+/* global unirest */
 
 let firstArticle;
 let totalArticles;
@@ -23,7 +24,7 @@ automaticHeader(['get', 'post', 'put', 'delete']);
 describe('Read', () => {
     describe('Correct id', () => {
         it('should list correctly the model', done => {
-            unirest.get('http://localhost:3006/articles')
+            unirest.get('https://localhost:3006/articles')
                 .type('json')
                 .end(response => {
                     assert.equal(200, response.code);
@@ -37,7 +38,7 @@ describe('Read', () => {
         });
 
         it('should read correctly one model', done => {
-            unirest.get('http://localhost:3006/articles/' + firstArticle)
+            unirest.get('https://localhost:3006/articles/' + firstArticle)
                 .type('json')
                 .end(response => {
                     assert.equal(200, response.code);
@@ -48,10 +49,10 @@ describe('Read', () => {
         });
 
         it('should read correctly the model and its relatives with ?embed=modelA,modelB', done => {
-            unirest.get('http://localhost:3006/purchases/')
+            unirest.get('https://localhost:3006/purchases/')
                 .type('json')
                 .end(response => {
-                    unirest.get(`http://localhost:3006/purchases/${response.body[0].id}/?embed=buyer,seller,articles`)
+                    unirest.get(`https://localhost:3006/purchases/${response.body[0].id}/?embed=buyer,seller,articles`)
                         .type('json')
                         .end(response => {
                             assert.equal('string', typeof response.body.buyer.id);
@@ -62,7 +63,7 @@ describe('Read', () => {
         });
 
         it('should support ordering asc', done => {
-            unirest.get('http://localhost:3006/articles?orderBy=name&sort=asc')
+            unirest.get('https://localhost:3006/articles?orderBy=name&sort=asc')
                 .type('json')
                 .end(response => {
                     let articles = response.body.map(article => article.name);
@@ -73,7 +74,7 @@ describe('Read', () => {
         });
 
         it('should support ordering dsc', done => {
-            unirest.get('http://localhost:3006/articles?orderBy=name&sort=dsc')
+            unirest.get('https://localhost:3006/articles?orderBy=name&sort=dsc')
                 .type('json')
                 .end(response => {
                     let articles = response.body.map(article => article.name);
@@ -84,7 +85,7 @@ describe('Read', () => {
         });
 
         it('should support ordering without order', done => {
-            unirest.get('http://localhost:3006/articles?orderBy=name')
+            unirest.get('https://localhost:3006/articles?orderBy=name')
                 .type('json')
                 .end(response => {
                     let articles = response.body.map(article => article.name);
@@ -95,7 +96,7 @@ describe('Read', () => {
         });
 
         it('should support limiting', done => {
-            unirest.get('http://localhost:3006/articles?limit=1')
+            unirest.get('https://localhost:3006/articles?limit=1')
                 .type('json')
                 .end(response => {
                     assert.equal(1, response.body.length);
@@ -104,7 +105,7 @@ describe('Read', () => {
         });
 
         it('should support skipping', done => {
-            unirest.get('http://localhost:3006/articles?offset=1')
+            unirest.get('https://localhost:3006/articles?offset=1')
                 .type('json')
                 .end(response => {
                     assert.equal(totalArticles - 1, response.body.length);
@@ -115,7 +116,7 @@ describe('Read', () => {
 
     describe('Incorrect id', () => {
         it('should not read if id is non-existant', done => {
-            unirest.get('http://localhost:3006/articles/00000000-0000-1000-8000-000000000000')
+            unirest.get('https://localhost:3006/articles/00000000-0000-1000-8000-000000000000')
                 .type('json')
                 .end(response => {
                     assert.equal(404, response.code);
@@ -125,7 +126,7 @@ describe('Read', () => {
         });
 
         it('should not read if the id is not a guid', done => {
-            unirest.get('http://localhost:3006/articles/foo')
+            unirest.get('https://localhost:3006/articles/foo')
                 .type('json')
                 .end(response => {
                     assert.equal(400, response.code);
@@ -135,7 +136,7 @@ describe('Read', () => {
         });
 
         it('should not read if the model does not exists', done => {
-            unirest.get('http://localhost:3006/foo/00000000-0000-1000-8000-000000000000')
+            unirest.get('https://localhost:3006/foo/00000000-0000-1000-8000-000000000000')
                 .type('json')
                 .end(response => {
                     assert.equal(404, response.code);

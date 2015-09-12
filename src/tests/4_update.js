@@ -1,5 +1,6 @@
 import assert from 'assert';
-import unirest from 'unirest';
+
+/* global unirest */
 
 /**
  * Automatically adds bearer
@@ -19,10 +20,10 @@ automaticHeader(['get', 'post', 'put', 'delete']);
 describe('Update', () => {
     describe('Correct id/model', () => {
         it('should update correctly the model', done => {
-            unirest.get('http://localhost:3006/articles')
+            unirest.get('https://localhost:3006/articles')
                 .type('json')
                 .end(response => {
-                    unirest.put('http://localhost:3006/articles/' + response.body[0].id + '/')
+                    unirest.put('https://localhost:3006/articles/' + response.body[0].id + '/')
                         .type('json')
                         .send({
                             name: 'Updated name'
@@ -36,10 +37,10 @@ describe('Update', () => {
         });
 
         it('should cut the additionals fields if they are not part of the model', done => {
-            unirest.get('http://localhost:3006/articles')
+            unirest.get('https://localhost:3006/articles')
                 .type('json')
                 .end(response => {
-                    unirest.put('http://localhost:3006/articles/' + response.body[0].id + '/')
+                    unirest.put('https://localhost:3006/articles/' + response.body[0].id + '/')
                         .type('json')
                         .send({
                             name: 'Updated name',
@@ -57,7 +58,7 @@ describe('Update', () => {
 
     describe('Incorrect id/model', () => {
         it('should not update if id is non-existant', done => {
-            unirest.put('http://localhost:3006/articles/00000000-0000-1000-8000-000000000000')
+            unirest.put('https://localhost:3006/articles/00000000-0000-1000-8000-000000000000')
                 .type('json')
                 .send({
                     foo: 'bar'
@@ -70,7 +71,7 @@ describe('Update', () => {
         });
 
         it('should not update if the id is not a guid', done => {
-            unirest.put('http://localhost:3006/articles/foo')
+            unirest.put('https://localhost:3006/articles/foo')
                 .type('json')
                 .send({
                     foo: 'bar'
@@ -83,7 +84,7 @@ describe('Update', () => {
         });
 
         it('should not read if the model does not exists', done => {
-            unirest.put('http://localhost:3006/foo/00000000-0000-1000-8000-000000000000')
+            unirest.put('https://localhost:3006/foo/00000000-0000-1000-8000-000000000000')
                 .type('json')
                 .send({
                     foo: 'bar'

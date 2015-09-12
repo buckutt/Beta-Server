@@ -1,5 +1,6 @@
-import assert  from 'assert';
-import unirest from 'unirest';
+import assert from 'assert';
+
+/* global unirest */
 
 let IceTeaPeche;
 let KinderDelice;
@@ -8,6 +9,12 @@ let UNG;
 let Foyer;
 let GJ;
 let TC;
+
+process.env.GJId           = '';
+process.env.FoyerId        = '';
+process.env.KinderDeliceId = '';
+process.env.IceTeaPecheId  = '';
+process.env.Formule1EuroId = '';
 
 /**
  * Automatically adds bearer
@@ -29,7 +36,7 @@ describe('Create', function () {
 
     describe('Correct model', () => {
         it('should support multiple entries', done => {
-            unirest.post('http://localhost:3006/articles')
+            unirest.post('https://localhost:3006/articles')
                 .type('json')
                 .send([
                     {
@@ -45,12 +52,15 @@ describe('Create', function () {
                     assert.equal(200, response.code);
                     IceTeaPeche = response.body[0];
                     assert.equal(2, response.body.length);
+
+                    process.env.IceTeaPecheId = IceTeaPeche.id;
+
                     done();
                 });
         });
 
         it('should support one unique entry', done => {
-            unirest.post('http://localhost:3006/articles')
+            unirest.post('https://localhost:3006/articles')
                 .type('json')
                 .send({
                     name : 'Ice Tea Mangue',
@@ -64,7 +74,7 @@ describe('Create', function () {
         });
 
         it('should create Article', done => {
-            unirest.post('http://localhost:3006/articles')
+            unirest.post('https://localhost:3006/articles')
                 .type('json')
                 .send({
                     name : 'Kinder Delice',
@@ -74,12 +84,15 @@ describe('Create', function () {
                     assert.equal(200, response.code);
                     KinderDelice = response.body;
                     assert.equal('string', typeof response.body.id);
+
+                    process.env.KinderDeliceId = KinderDelice.id;
+
                     done();
                 });
         });
 
         it('should create Category', done => {
-            unirest.post('http://localhost:3006/categories')
+            unirest.post('https://localhost:3006/categories')
                 .type('json')
                 .send({
                     name: 'Barres'
@@ -92,7 +105,7 @@ describe('Create', function () {
         });
 
         it('should create Device', done => {
-            unirest.post('http://localhost:3006/devices')
+            unirest.post('https://localhost:3006/devices')
                 .type('json')
                 .send({
                     name       : 'eeetop-1',
@@ -106,7 +119,7 @@ describe('Create', function () {
         });
 
         it('should create Fundation', done => {
-            unirest.post('http://localhost:3006/fundations')
+            unirest.post('https://localhost:3006/fundations')
                 .type('json')
                 .send({
                     name   : 'UNG',
@@ -122,7 +135,7 @@ describe('Create', function () {
         });
 
         it('should create Group', done => {
-            unirest.post('http://localhost:3006/groups')
+            unirest.post('https://localhost:3006/groups')
                 .type('json')
                 .send({
                     name    : 'Cotisants A2016',
@@ -137,7 +150,7 @@ describe('Create', function () {
         });
 
         it('should create MeanOfLogin', done => {
-            unirest.post('http://localhost:3006/meansoflogins')
+            unirest.post('https://localhost:3006/meansoflogins')
                 .type('json')
                 .send({
                     type: 'etuMail',
@@ -151,7 +164,7 @@ describe('Create', function () {
         });
 
         it('should create Period', done => {
-            unirest.post('http://localhost:3006/periods')
+            unirest.post('https://localhost:3006/periods')
                 .type('json')
                 .send({
                     name : 'Just now',
@@ -166,7 +179,7 @@ describe('Create', function () {
         });
 
         it('should create Point', done => {
-            unirest.post('http://localhost:3006/points')
+            unirest.post('https://localhost:3006/points')
                 .type('json')
                 .send({
                     name: 'Foyer'
@@ -175,12 +188,15 @@ describe('Create', function () {
                     Foyer = response.body;
                     assert.equal(200, response.code);
                     assert.equal('string', typeof response.body.id);
+
+                    process.env.FoyerId = Foyer.id;
+
                     done();
                 });
         });
 
         it('should create Price', done => {
-            unirest.post('http://localhost:3006/prices')
+            unirest.post('https://localhost:3006/prices')
                 .type('json')
                 .send({
                     amount: 3.141592654
@@ -193,7 +209,7 @@ describe('Create', function () {
         });
 
         it('should create Promotions', done => {
-            unirest.post('http://localhost:3006/promotions')
+            unirest.post('https://localhost:3006/promotions')
                 .type('json')
                 .send({
                     name: 'Formule 1€'
@@ -202,12 +218,15 @@ describe('Create', function () {
                     Formule1Euro = response.body;
                     assert.equal(200, response.code);
                     assert.equal('string', typeof response.body.id);
+
+                    process.env.Formule1EuroId = Formule1Euro.id;
+
                     done();
                 });
         });
 
         it('should create Reloads', done => {
-            unirest.post('http://localhost:3006/reloads')
+            unirest.post('https://localhost:3006/reloads')
                 .type('json')
                 .send({
                     trace : 'Ticket caisse n°123',
@@ -221,7 +240,7 @@ describe('Create', function () {
         });
 
         it('should create Right', done => {
-            unirest.post('http://localhost:3006/rights')
+            unirest.post('https://localhost:3006/rights')
                 .type('json')
                 .send({
                     name   : 'admin',
@@ -235,7 +254,7 @@ describe('Create', function () {
         });
 
         it('should create User', done => {
-            unirest.post('http://localhost:3006/users')
+            unirest.post('https://localhost:3006/users')
                 .type('json')
                 .send({
                     firstname: 'Gabriel',
@@ -251,7 +270,9 @@ describe('Create', function () {
                     GJ = response.body;
                     assert.equal('string', typeof response.body.id);
 
-                    unirest.post('http://localhost:3006/users')
+                    process.env.GJId = GJ.id;
+
+                    unirest.post('https://localhost:3006/users')
                         .type('json')
                         .send({
                             firstname: 'Thomas',
@@ -272,7 +293,7 @@ describe('Create', function () {
         });
 
         it('should create Purchase with relationships', done => {
-            unirest.post('http://localhost:3006/purchases?embed=articles,promotion')
+            unirest.post('https://localhost:3006/purchases?embed=articles,promotion')
                 .type('json')
                 .send({
                     fundationId: UNG.id,
@@ -295,7 +316,7 @@ describe('Create', function () {
         });
 
         it('should cut the additionals fields if they are not part of the model', done => {
-            unirest.post('http://localhost:3006/articles')
+            unirest.post('https://localhost:3006/articles')
                 .type('json')
                 .send({
                     name : 'Mars',
@@ -313,7 +334,7 @@ describe('Create', function () {
 
     describe('Invalid model', () => {
         it('should throw an error if there are missing fields', done => {
-            unirest.post('http://localhost:3006/articles')
+            unirest.post('https://localhost:3006/articles')
                 .type('json')
                 .send({})
                 .end(response => {
@@ -323,7 +344,7 @@ describe('Create', function () {
         });
 
         it('should throw an error if the model does not exists', done => {
-            unirest.post('http://localhost:3006/foo')
+            unirest.post('https://localhost:3006/foo')
                 .type('json')
                 .send({})
                 .end(response => {

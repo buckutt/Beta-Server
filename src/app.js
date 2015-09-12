@@ -3,13 +3,14 @@ import path         from 'path';
 import APIError     from './APIError';
 import config       from './config';
 import logger       from './log';
-import { pp }       from './lib/utils';
+import { pp }       from './lib/utils';
 import models       from './models';
 import bodyParser   from 'body-parser';
 import compression  from 'compression';
 import consoleTitle from 'console-title';
 import cookieParser from 'cookie-parser';
 import express      from 'express';
+import https        from 'https';
 import morgan       from 'morgan';
 
 let log = logger(module);
@@ -30,6 +31,14 @@ app.use(compression());
 // Set application into the request
 app.use((req, res, next) => {
     req.app = app;
+
+    if (!req.client.authorized) {
+        res
+            .status(401)
+            .end('Unauthorized : missing client HTTPS certificate');
+
+        return;
+    }
 
     return next();
 });
@@ -99,19 +108,32 @@ app.use((err, req, res, next) => { // jshint ignore:line
     }
 
     res
-        .status(err.status || 500)
+        .status(err.status || 500)
         .json(err)
         .end();
 });
 
-// Start the application
-if (require.main === module) {
-    console.log('LISTEN');
-    app.listen(config.port, () => {
+app.start = () => {
+    let server = https.createServer({
+        key               : fs.readFileSync('./ssl/server.key'),
+        cert              : fs.readFileSync('./ssl/server.crt'),
+        ca                : fs.readFileSync('./ssl/ca.crt'),
+        requestCert       : true,
+        rejectUnauthorized: false
+    }, app);
+
+    // let server = http.createServer(app);
+
+    server.listen(config.port, () => {
         log.info('Server is listening on port %d', config.port);
         log.warn('Please wait for models to be ready...');
         consoleTitle('Buckutt Server *');
     });
+};
+
+// Start the application
+if (require.main === module) {
+    app.start();
 }
 
 export default app;

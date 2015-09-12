@@ -23,6 +23,7 @@ Device.pre('save', function (next) {
 Device.ensureIndex('name');
 Device.ensureIndex('createdAt');
 Device.ensureIndex('editedAt');
+Device.ensureIndex('fingerprint');
 
 Device.associate = models => {
     models.Device.hasAndBelongsToMany(models.Point, 'points', 'id', 'id');

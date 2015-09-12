@@ -1,5 +1,15 @@
-import thinky  from '../thinky';
-import Promise from 'bluebird';
+import thinky   from '../thinky';
+import Promise  from 'bluebird';
+import syncExec from 'sync-exec';
+
+let sslResult = syncExec('openssl x509 -noout -fingerprint -in ssl/test.crt').stdout;
+
+if (sslResult.indexOf('=') === -1) {
+    console.error('Couldn\'t find test certificate (ssl/test.crt). See README.md to create it');
+    process.exit(1);
+}
+
+let fingerprint = sslResult.split('=')[1].replace(/:/g, '').trim();
 
 let r = thinky.r;
 describe('Before tests', () => {
@@ -84,7 +94,7 @@ describe('Before tests', () => {
             }]);
         }).then(res =>
             r.table('Right').insert([{
-                name     : 'seller',
+                name     : 'admin',
                 isAdmin  : false,
                 createdAt: new Date(),
                 editedAt : new Date(),
@@ -106,6 +116,14 @@ describe('Before tests', () => {
                 Right_id: res.generated_keys[1],
                 User_id : userId
             }])
+        ).then(() =>
+            r.table('Device').insert({
+                fingerprint: fingerprint,
+                name       : 'buckutt-test',
+                createdAt  : new Date(),
+                editedAt   : new Date(),
+                isRemoved  : false
+            })
         ).then(() => {
             done();
         });

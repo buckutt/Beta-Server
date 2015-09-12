@@ -1,15 +1,31 @@
-import app          from '../app';
-import config       from '../config';
-import logger       from '../log';
-import consoleTitle from 'console-title';
-
-let log = logger(module);
+import app     from '../app';
+import fs      from 'fs';
+import unirest from 'unirest';
 
 describe('Should start the test application', () => {
-    app.listen(config.port, () => {
-        log.info('Server is listening on port %d', config.port);
-        log.warn('Please wait for models to be ready...');
-        consoleTitle('Buckutt Server *');
+    it('should init models', function (done) {
+        this.timeout(500 * 1000);
+
+        app.start();
+
+        app.locals.models.onReady = () => {
+            done();
+        };
     });
 });
 
+let certFile = fs.readFileSync('ssl/test.crt');
+let keyFile  = fs.readFileSync('ssl/test.key');
+let caFile   = fs.readFileSync('ssl/ca.crt');
+
+let options = {
+    cert              : certFile,
+    key               : keyFile,
+    ca                : caFile,
+    strictSSL         : false,
+    rejectUnauthorized: false
+};
+
+unirest.request = unirest.request.defaults(options);
+
+global.unirest = unirest;
