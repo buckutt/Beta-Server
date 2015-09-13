@@ -1,4 +1,5 @@
 {
+    "jsDoc": {
         "disallowCurlyBraces"                       : [],
         "disallowEmptyBlocks"                       : true,
         "disallowImplicitTypeConversion"            : [],
@@ -78,4 +79,5 @@
         "validateLineBreaks"                        : "LF",
 
         "esnext": true
+    }
 }
