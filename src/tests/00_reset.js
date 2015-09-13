@@ -2,10 +2,10 @@ import thinky   from '../thinky';
 import Promise  from 'bluebird';
 import syncExec from 'sync-exec';
 
-let sslResult = syncExec('openssl x509 -noout -fingerprint -in ssl/test.crt').stdout;
+let sslResult = syncExec('openssl x509 -noout -fingerprint -in ssl/test/test.crt').stdout;
 
 if (sslResult.indexOf('=') === -1) {
-    console.error('Couldn\'t find test certificate (ssl/test.crt). See README.md to create it');
+    console.error('Couldn\'t find test certificate (ssl/test/test.crt). See README.md to create it');
     process.exit(1);
 }
 

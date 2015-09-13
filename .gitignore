@@ -4,4 +4,3 @@ app/
 rethinkdb_data/
 db.mwb.bak
 npm-debug.log
-ssl/

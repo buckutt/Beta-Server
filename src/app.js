@@ -114,10 +114,12 @@ app.use((err, req, res, next) => { // jshint ignore:line
 });
 
 app.start = () => {
+    let path = (process.env.NODE_ENV === 'test') ? 'ssl/test' : 'ssl';
+
     let server = https.createServer({
-        key               : fs.readFileSync('./ssl/server.key'),
-        cert              : fs.readFileSync('./ssl/server.crt'),
-        ca                : fs.readFileSync('./ssl/ca.crt'),
+        key               : fs.readFileSync(`./${path}/server.key`),
+        cert              : fs.readFileSync(`./${path}/server.crt`),
+        ca                : fs.readFileSync(`./${path}/ca.crt`),
         requestCert       : true,
         rejectUnauthorized: false
     }, app);

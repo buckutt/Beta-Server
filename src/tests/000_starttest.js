@@ -14,9 +14,9 @@ describe('Should start the test application', () => {
     });
 });
 
-let certFile = fs.readFileSync('ssl/test.crt');
-let keyFile  = fs.readFileSync('ssl/test.key');
-let caFile   = fs.readFileSync('ssl/ca.crt');
+let certFile = fs.readFileSync('ssl/test/test.crt');
+let keyFile  = fs.readFileSync('ssl/test/test.key');
+let caFile   = fs.readFileSync('ssl/test/ca.crt');
 
 let options = {
     cert              : certFile,
