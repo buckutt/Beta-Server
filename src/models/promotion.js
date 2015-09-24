@@ -31,8 +31,8 @@ Promotion.associate = models => {
     models.Promotion.belongsTo(models.Price, 'price', 'priceId', 'id');
     // n:n instead of 1:n to allow one promotion containing multiple times the same article
     models.Promotion.hasAndBelongsToMany(models.Article, 'articles', 'id', 'id');
-    // n:n instead of 1:n to allow one promotion containing multiple times the same category
-    models.Promotion.hasAndBelongsToMany(models.Category, 'categories', 'id', 'id');
+    // n:n instead of 1:n to allow one promotion containing multiple times the same set
+    models.Promotion.hasAndBelongsToMany(models.Set, 'sets', 'id', 'id');
     models.Promotion.hasMany(models.Purchase, 'purchases', 'id', 'promotionId');
 };
 
