@@ -37,6 +37,7 @@
     - There should not be data in the junction table that is not the relation itself. A relation is not data.
     - Based on the last point, MeanOfLogin can't just be a mean of login and the relation carrying the data.
       A MeanOfLogin has a type (that is the mean) and a data string next to it.
+    - ReloadType is merged into Reload.trace
 * More notes :
     - There should be virtual categories to allow exceptions in promotions. Eg, 1€ pack containing a drink (the whole
       category except Redbull) and a bar. New table to be made : Set, and promotions should be treated with sets and no

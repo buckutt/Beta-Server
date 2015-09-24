@@ -53,8 +53,7 @@ npm run start # compile + start
 
 ```sh
 npm run startdb # db server in background
-npm run starttest # compile + start in test environment
-npm run test # test runner (in another tab)
+npm run test # compile + start in test environment
 ```
 
 ## Cleaning
