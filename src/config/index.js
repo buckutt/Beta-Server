@@ -37,30 +37,10 @@ let rightsManagement = {
 
 let pinLoggingAllowed = ['seller'];
 
-let meanOfPayment = [
-    {
-        slug: 'card',
-        text: 'Carte'
-    },
-    {
-        slug: 'cash',
-        text: 'Liquide'
-    },
-    {
-        slug: 'cheque',
-        text: 'Chèque'
-    },
-    {
-        slug: 'gobby',
-        text: 'Gobby'
-    }
-];
-
 let config = require(`./${env}.json`);
 
 config.secret            = secret;
 config.rightsManagement  = rightsManagement;
 config.pinLoggingAllowed = pinLoggingAllowed;
-config.meanOfPayment     = meanOfPayment;
 
 export default config;
