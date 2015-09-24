@@ -31,9 +31,16 @@ gulp.task('clean', function (cb) {
     rimraf('app', cb);
 });
 
-gulp.task('lint');
+gulp.task('config', function () {
+    var src = 'src/config/**/*.json';
+    var dst = 'app/config/';
 
-gulp.task('default', function () {
+    return gulp.src(src)
+        .pipe(changed(dst))
+        .pipe(gulp.dest(dst));
+});
+
+gulp.task('default', ['config'], function () {
     var src = 'src/**/*.js';
     var dst = 'app';
     return gulp.src(src)
