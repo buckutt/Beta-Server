@@ -42,6 +42,8 @@ User.associate = models => {
     models.User.hasMany(models.Purchase, 'sells', 'id', 'sellerId');
     models.User.hasMany(models.Reload, 'reloads', 'id', 'buyerId');
     models.User.hasMany(models.Reload, 'reloadsMade', 'id', 'sellerId');
+    models.User.hasMany(models.Transfer, 'transfers', 'id', 'toId');
+    models.User.hasMany(models.Transfer, 'transfersMade', 'id', 'fromId');
 };
 
 export default User;
