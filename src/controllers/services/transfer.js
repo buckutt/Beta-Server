@@ -1,9 +1,9 @@
 import APIError from '../../APIError';
 import logger   from '../../log';
 import thinky   from '../../thinky';
-import { pp }   from '../../lib/utils';
+// import { pp }   from '../../lib/utils';
 import express  from 'express';
-import Promise  from 'bluebird';
+// import Promise  from 'bluebird';
 
 let log = logger(module);
 
@@ -17,14 +17,10 @@ export default app => {
 
     // Get the toUser
     router.post('/services/transfer', (req, res, next) => {
-        if (!Array.isArray(req.body)) {
-            return next(new APIError(400, 'Invalid basket'));
-        }
-
-        req.recieverId = req.body[0].recieverId;
+        req.recieverId = req.body.recieverId;
 
         if (!req.recieverId) {
-            return next(new APIError(400, 'Invalid destin'));
+            return next(new APIError(400, 'Invalid reciever'));
         }
 
         models.User
@@ -37,18 +33,22 @@ export default app => {
 
     router.post('/services/transfer', (req, res, next) => {
         let amount = req.body.amount;
+
         let date   = new Date();
 
         if (req.user.credit - amount < 0) {
-            return next(new APIError(400, 'Not enough sender credit'));
+            console.log(req.user.credit, amount);
+            return next(new APIError(400, 'Not enough sender credit', `Credit: ${req.user.credit} Amount: ${amount}`));
         }
 
         if (req.recieverUser.credit + amount > 100 * 100) {
             return next(new APIError(400, 'Too much reciever credit'));
         }
 
-        let queryLog = `User ${req.user.firstName} ${req.user.lastName} sends ${amount / 100}€ to `;
-        queryLog    += `${req.recieverUser.firstName} ${req.recieverUser.lastName}`;
+        console.log('User', req.user);
+
+        let queryLog = `User ${req.user.firstname} ${req.user.lastname} sends ${amount / 100}€ to `;
+        queryLog    += `${req.recieverUser.firstname} ${req.recieverUser.lastname}`;
 
         let newTransfer = new models.Transfer({
             amount,
@@ -58,16 +58,22 @@ export default app => {
         newTransfer.senderId   = req.user.id;
         newTransfer.recieverId = req.recieverUser.id;
 
+        log.info(queryLog);
+
         newTransfer
             .save()
             .then(() =>
                 res
                     .status(200)
+                    .json({
+                        newCredit: req.user.credit - amount
+                    })
                     .end()
             )
-            .catch(thinky.Errors.ValidationError, err =>
-                next(new APIError(400, 'Invalid model', err))
-            )
+            .catch(thinky.Errors.ValidationError, err => {
+                console.log('ERR', err);
+                return next(new APIError(400, 'Invalid model', err))
+            })
             .catch(thinky.Errors.InvalidWrite, err =>
                 next(new APIError(500, 'Couldn\'t write to disk', err))
             )
