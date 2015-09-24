@@ -124,6 +124,25 @@ describe('Before tests', () => {
                 editedAt   : new Date(),
                 isRemoved  : false
             })
+        ).then(() =>
+            r.table('MeanOfPayment').insert([
+                {
+                    slug: 'card',
+                    name: 'Carte'
+                },
+                {
+                    slug: 'cash',
+                    name: 'Liquide'
+                },
+                {
+                    slug: 'cheque',
+                    name: 'Chèque'
+                },
+                {
+                    slug: 'gobby',
+                    name: 'Gobby'
+                }
+            ])
         ).then(() => {
             done();
         });
