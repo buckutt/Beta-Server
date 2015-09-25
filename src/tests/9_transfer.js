@@ -18,4 +18,32 @@ describe('Transfers', () => {
                 });
         });
     });
+
+    describe('Incorrect data', () => {
+        it('should not transfer if sender has not enough money', done => {
+            unirest.post('https://localhost:3006/services/transfer')
+                .type('json')
+                .send({
+                    recieverId: process.env.GJId,
+                    amount    : 150
+                })
+                .end(response => {
+                    assert.equal(400, response.code);
+                    done();
+                });
+        });
+
+        it('should not transfer if reciever would have more than 100€', done => {
+            unirest.post('https://localhost:3006/services/transfer')
+                .type('json')
+                .send({
+                    recieverId: process.env.GJId,
+                    amount    : 120 * 100
+                })
+                .end(response => {
+                    assert.equal(400, response.code);
+                    done();
+                });
+        });
+    });
 });

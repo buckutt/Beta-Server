@@ -36,13 +36,12 @@ export default app => {
 
         let date   = new Date();
 
-        if (req.user.credit - amount < 0) {
-            console.log(req.user.credit, amount);
-            return next(new APIError(400, 'Not enough sender credit', `Credit: ${req.user.credit} Amount: ${amount}`));
-        }
-
         if (req.recieverUser.credit + amount > 100 * 100) {
             return next(new APIError(400, 'Too much reciever credit'));
+        }
+
+        if (req.user.credit - amount < 0) {
+            return next(new APIError(400, 'Not enough sender credit', `Credit: ${req.user.credit} Amount: ${amount}`));
         }
 
         console.log('User', req.user);
@@ -70,10 +69,9 @@ export default app => {
                     })
                     .end()
             )
-            .catch(thinky.Errors.ValidationError, err => {
-                console.log('ERR', err);
-                return next(new APIError(400, 'Invalid model', err))
-            })
+            .catch(thinky.Errors.ValidationError, err =>
+                next(new APIError(400, 'Invalid model', err))
+            )
             .catch(thinky.Errors.InvalidWrite, err =>
                 next(new APIError(500, 'Couldn\'t write to disk', err))
             )
