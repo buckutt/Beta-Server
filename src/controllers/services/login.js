@@ -10,6 +10,10 @@ import Promise  from 'bluebird';
 const bcrypt = Promise.promisifyAll(bcrypt_);
 let log      = logger(module);
 
+/**
+ * Login controller. Connects a user
+ * @param {Application} app Express main application
+ */
 export default app => {
     let models = app.locals.models;
     let router = express.Router();

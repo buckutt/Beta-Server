@@ -50,3 +50,4 @@
     instead of fetching tokens on every request. Be careful, there was a difference between rights stored and rights
     used (req.user.rights) as used rights are filtred (based on pin/password and right expiration)
     - Do not use failedAuth => use haproxy/nginx/iptables to do that
+    -> Finally, there should not be any right revocation (seller should keep his rights until disconnect)

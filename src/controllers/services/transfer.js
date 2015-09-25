@@ -1,9 +1,7 @@
 import APIError from '../../APIError';
 import logger   from '../../log';
 import thinky   from '../../thinky';
-// import { pp }   from '../../lib/utils';
 import express  from 'express';
-// import Promise  from 'bluebird';
 
 let log = logger(module);
 
@@ -15,7 +13,7 @@ export default app => {
     let models = app.locals.models;
     let router = new express.Router();
 
-    // Get the toUser
+    // Get the reciever user
     router.post('/services/transfer', (req, res, next) => {
         req.recieverId = req.body.recieverId;
 
