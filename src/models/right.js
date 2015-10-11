@@ -9,6 +9,7 @@ let Right = thinky.createModel('Right', {
     createdAt: type.date().default(new Date()),
     editedAt : Date,
     isRemoved: type.boolean().default(false),
+    // Force Thinky to show thoses additional fields that would be cut by enforce_extra
     periodId : type.string().optional()
 }, {
     enforce_missing: true,

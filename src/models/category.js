@@ -24,8 +24,6 @@ Category.ensureIndex('createdAt');
 Category.ensureIndex('editedAt');
 
 Category.associate = models => {
-    // n:n instead of 1:n to allow one promotion containing multiple times the same category
-    models.Category.hasAndBelongsToMany(models.Promotion, 'promotion', 'id', 'id');
     models.Category.hasMany(models.Article, 'articles', 'id', 'categoryId');
 };
 
