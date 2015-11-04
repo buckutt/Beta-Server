@@ -15,6 +15,7 @@
 * Model descriptions :
     - Article     : what you buy
     - Category    : tabs in the seller view, or virtual to manage promotions
+    - Config      : shared devices config
     - Device      : representation of a device
     - Fundation   : a non profit organization of the UTT
     - Group       : a group of users
