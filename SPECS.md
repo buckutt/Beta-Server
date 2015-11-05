@@ -29,10 +29,10 @@
     - Right       : A user right
     - User        : A student
 * Database : See src/models/ or db.mwb. Some notes here :
-    - Usage of three tables Article, Category and Promotion to avoid the « all-in-articles » mess
+    - Usage of four tables Article, Category, Promotion and Sets to avoid the « all-in-articles » mess
     - A price is unique and has many articles
-    - A promotion can target a specific item, or a whole category
-    - A promotion can target the same item multiple times, or a category multiple times, that's why the relation between
+    - A promotion can target a specific item, or a whole set
+    - A promotion can target the same item multiple times, or a set multiple times, that's why the relation between
       them is n:n (to get a junction table)
     - A point should be highly configurable, with specific dates of use, etc.
     - There should not be data in the junction table that is not the relation itself. A relation is not data.
