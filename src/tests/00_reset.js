@@ -45,6 +45,8 @@ describe('Before tests', () => {
     it('should create one user', done => {
         let userId;
 
+        let pointId;
+
         r.table('User').insert({
             firstname  : 'Buck',
             lastname   : 'UTT',
@@ -117,12 +119,27 @@ describe('Before tests', () => {
                 User_id : userId
             }])
         ).then(() =>
+            r.table('Point').insert({
+                name     : 'Foyer',
+                createdAt: new Date(),
+                editedAt : new Date(),
+                isRemoved: false
+            })
+        ).then(res => {
+            pointId = res.generated_keys[0];
+        }).then(() =>
             r.table('Device').insert({
                 fingerprint: fingerprint,
                 name       : 'buckutt-test',
                 createdAt  : new Date(),
                 editedAt   : new Date(),
                 isRemoved  : false
+            })
+        ).then(res =>
+            r.table('Device_Point').insert({
+                id       : `${res.generated_keys[0]}_${pointId}`,
+                Point_id : pointId,
+                Device_id: res.generated_keys[0]
             })
         ).then(() =>
             r.table('MeanOfPayment').insert([

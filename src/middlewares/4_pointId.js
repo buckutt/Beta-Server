@@ -13,9 +13,15 @@ export default (req, res, next) => {
         .getAll(fingerprint, {
             index: 'fingerprint'
         })
+        .getJoin({
+            points: true
+        })
         .run()
-        .then(point => {
-            req.pointId = point[0].id;
+        .then(devices => {
+            req.pointId = devices[0].points[0].id;
+
+            res.header('point', req.pointId);
+            res.header('device', devices[0].id);
 
             return next();
         });
