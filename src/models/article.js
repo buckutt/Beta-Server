@@ -12,8 +12,7 @@ let Article = thinky.createModel('Article', {
     isRemoved : type.boolean().default(false),
     // Force Thinky to show thoses additional fields that would be cut by enforce_extra
     categoryId: type.string().optional(),
-    pointId   : type.string().optional(),
-    priceId   : type.string().optional()
+    pointId   : type.string().optional()
 }, {
     enforce_missing: true,
     enforce_extra  : 'remove',

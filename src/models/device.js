@@ -29,7 +29,7 @@ Device.ensureIndex('editedAt');
 Device.ensureIndex('fingerprint');
 
 Device.associate = models => {
-    models.Device.hasAndBelongsToMany(models.Point, 'points', 'id', 'id');
+    models.Device.hasAndBelongsToMany(models.PeriodPoint, 'periodPoints', 'id', 'id');
 };
 
 export default Device;

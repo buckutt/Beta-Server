@@ -31,6 +31,10 @@ gulp.task('clean', function (cb) {
     rimraf('app', cb);
 });
 
+gulp.task('cleardb', function (cb) {
+    rimraf('rethinkdb_data', cb);
+});
+
 gulp.task('config', function () {
     var src = 'src/config/**/*.json';
     var dst = 'app/config/';

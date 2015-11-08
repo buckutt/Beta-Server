@@ -21,13 +21,14 @@ describe('Before tests', () => {
             r.table('Article_Purchase').delete(),
             r.table('Category').delete(),
             r.table('Device').delete(),
-            r.table('Device_Point').delete(),
+            r.table('Device_PeriodPoint').delete(),
             r.table('Fundation').delete(),
             r.table('Group').delete(),
             r.table('Group_User').delete(),
             r.table('MeanOfLogin').delete(),
             r.table('Period').delete(),
             r.table('Point').delete(),
+            r.table('PeriodPoint').delete(),
             r.table('Price').delete(),
             r.table('Promotion').delete(),
             r.table('Purchase').delete(),
@@ -44,8 +45,10 @@ describe('Before tests', () => {
 
     it('should create one user', done => {
         let userId;
-
         let pointId;
+        let deviceId;
+        let periodId;
+        let outdatedPeriodId;
 
         r.table('User').insert({
             firstname  : 'Buck',
@@ -94,21 +97,24 @@ describe('Before tests', () => {
                 editedAt : new Date(),
                 isRemoved: false
             }]);
-        }).then(res =>
+        }).then(res => {
+            periodId         = res.generated_keys[0];
+            outdatedPeriodId = res.generated_keys[1];
+        }).then(() =>
             r.table('Right').insert([{
                 name     : 'admin',
                 isAdmin  : false,
                 createdAt: new Date(),
                 editedAt : new Date(),
                 isRemoved: false,
-                periodId : res.generated_keys[0]
+                periodId : periodId
             }, {
                 name     : 'admin',
                 isAdmin  : true,
                 createdAt: new Date(),
                 editedAt : new Date(),
                 isRemoved: false,
-                periodId : res.generated_keys[1]
+                periodId : outdatedPeriodId
             }])
         ).then(res =>
             r.table('Right_User').insert([{
@@ -135,11 +141,18 @@ describe('Before tests', () => {
                 editedAt   : new Date(),
                 isRemoved  : false
             })
+        ).then(res => {
+            deviceId = res.generated_keys[0];
+        }).then(() =>
+            r.table('PeriodPoint').insert({
+                periodId: periodId,
+                pointId : pointId
+            })
         ).then(res =>
-            r.table('Device_Point').insert({
-                id       : `${res.generated_keys[0]}_${pointId}`,
-                Point_id : pointId,
-                Device_id: res.generated_keys[0]
+            r.table('Device_PeriodPoint').insert({
+                id            : `${deviceId}_${res.generated_keys[0]}`,
+                Device_id     : deviceId,
+                PeriodPoint_id: res.generated_keys[0]
             })
         ).then(() =>
             r.table('MeanOfPayment').insert([
