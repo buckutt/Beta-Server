@@ -15,7 +15,7 @@
     "start": "gulp && node app/app",
     "startdb": "rethinkdb&",
     "stopdb": "killall rethinkdb -s SIGINT",
-    "cleardb": "gul cleardb"
+    "cleardb": "gulp cleardb"
   },
   "dependencies": {
     "bcryptjs": "2.2.1",
