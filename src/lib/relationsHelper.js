@@ -12,7 +12,7 @@ const sanitize = (Model, modelData) => {
 
     leftKeys.forEach(function (key) {
         if (modelData[key]) {
-            saved[key] = clone(modelData[key]); // Save the relation
+            saved[key] = clone(modelData[key], false); // Save the relation
             delete modelData[key]; // And deletes the relation from the result object
         }
     });

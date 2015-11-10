@@ -41,17 +41,18 @@ function pp (obj) {
 
 /**
  * Clones an object
- * @param  {Mixed} obj The object to clone
+ * @param  {Mixed}    obj        The object to clone
+ * @param  {Boolean} [deep=true] Optional. Deep cloning
  * @return {Mixed} The same object, but different reference
  */
-function clone (obj) {
+function clone (obj, deep = true) {
     if (obj === null || typeof obj !== 'object') {
         return obj;
     }
 
     let result = obj.constructor(); // Copy constructor
     Object.keys(obj).forEach(function (key) {
-        result[key] = clone(obj[key]);
+        result[key] = deep ? clone(obj[key]) : obj[key];
     });
 
     return result;
