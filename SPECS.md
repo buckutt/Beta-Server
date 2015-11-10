@@ -52,3 +52,6 @@
     used (req.user.rights) as used rights are filtred (based on pin/password and right expiration)
     - Do not use failedAuth => use haproxy/nginx/iptables to do that
     -> Finally, there should not be any right revocation (seller should keep his rights until disconnect)
+* Offline :
+    Store on the card the amount and reloads ids. Then when the card is used on an online device, lists the internet reloads
+    removes the one on the card, and rewrite the card to take in the new reloads. Unique ids and not amounts

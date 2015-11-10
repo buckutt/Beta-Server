@@ -22,11 +22,16 @@ export default (req, res, next) => {
         })
         .run()
         .then(devices => {
+            if (devices.length === 0) {
+                // TODO : throw
+                return;
+            }
+
             device = devices[0];
 
             let periodPoints = device.periodPoints;
 
-            let minPeriod   = Infinity;
+            let minPeriod = Infinity;
 
             let promises = periodPoints.map(periodPoint =>
                 Period.get(periodPoint.periodId).run().then(period => {
@@ -41,7 +46,8 @@ export default (req, res, next) => {
             );
 
             return Promise.all(promises);
-        }).then(() => {
+        })
+        .then(() => {
             req.pointId = chosenPoint;
 
             res.header('point', req.pointId);
