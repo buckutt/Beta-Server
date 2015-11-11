@@ -27,55 +27,30 @@ var jshintConfig = {
     node   : true
 };
 
-gulp.task('seed:up', ['default'], function (cb) {
+gulp.task('seed', ['default'], function (cb) {
     var models = require('./app/models');
-    var pp     = require('./app/lib/utils').pp;
-
-    var saver = function (item) {
-        var joins = {};
-        Object.keys(item.getModel()._joins).forEach(function (key) {
-            joins[key] = true;
-        });
-        return item.saveAll(joins);
-    };
 
     models.onReady = function () {
-        var data = require('./app/buckuttData')(models);
+        var buckuttData = require('./app/buckuttData');
+        var raw         = buckuttData.raw(models);
 
-        var articlePromises    = data.articles.map(saver);
-        var categoriesPromises = data.categories.map(saver);
-        var devicesPromises    = data.devices.map(saver);
-        var fundationsPromises = data.fundations.map(saver);
-        var groupsPromises     = data.groups.map(saver);
-        var molPromises        = data.meansOfLogin.map(saver);
-        var mopPromises        = data.meansOfPayment.map(saver);
-        var periodsPromises    = data.periods.map(saver);
-        var pointsPromises     = data.points.map(saver);
-        var pricesPromises     = data.prices.map(saver);
-        var promotionsPromises = data.promotions.map(saver);
-        var rightsPromises     = data.rights.map(saver);
-        var setsPromises       = data.sets.map(saver);
-        var usersPromises      = data.users.map(saver);
+        Promise
+            .all(
+                raw.all.map(document => document.save())
+            )
+            .then(() => {
+                console.log('Inserted documents');
 
-        var allPromises = articlePromises
-            .concat(categoriesPromises)
-            .concat(devicesPromises)
-            .concat(fundationsPromises)
-            .concat(groupsPromises)
-            .concat(molPromises)
-            .concat(mopPromises)
-            .concat(periodsPromises)
-            .concat(pointsPromises)
-            .concat(pricesPromises)
-            .concat(promotionsPromises)
-            .concat(rightsPromises)
-            .concat(setsPromises)
-            .concat(usersPromises);
-
-        Promise.all(allPromises).then(function () {
-            console.log('saved');
-            cb();
-        });
+                return Promise.all(buckuttData.rels(models, raw.data));
+            })
+            .then(() => {
+                console.log('Inserted relationships');
+                cb();
+            })
+            .catch(err => {
+                console.log(err.stack);
+                cb();
+            });
     };
 });
 
