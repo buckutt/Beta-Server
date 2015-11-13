@@ -24,6 +24,7 @@
     "compression": "^1.6.0",
     "console-title": "1.0.1",
     "cookie-parser": "^1.4.0",
+    "cors": "^2.7.1",
     "express": "^4.13.3",
     "jsonwebtoken": "^5.0.5",
     "morgan": "1.6.1",
