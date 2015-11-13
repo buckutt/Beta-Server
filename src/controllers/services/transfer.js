@@ -42,8 +42,6 @@ export default app => {
             return next(new APIError(400, 'Not enough sender credit', `Credit: ${req.user.credit} Amount: ${amount}`));
         }
 
-        console.log('User', req.user);
-
         let queryLog = `User ${req.user.firstname} ${req.user.lastname} sends ${amount / 100}€ to `;
         queryLog    += `${req.recieverUser.firstname} ${req.recieverUser.lastname}`;
 
