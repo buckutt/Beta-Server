@@ -5,40 +5,7 @@ const queryRules = {
     orderBy: order  => order,
     sort   : sort   => sort,
     count  : ()     => true,
-    embed  : embed  => {
-        if (embed.length === 0) {
-            return undefined;
-        }
-
-        // ?embed=modelA:modelB:modelC,modelC,modelD
-        // Should generate
-        // {
-        //  modelA: {
-        //   modelB: true,
-        //   modelC: true
-        //  },
-        //  modelC: true,
-        //  modelD: true
-        // }
-        let joinObj = {};
-        embed
-            .split(',')
-            .map(model => model.split(':'))
-            .forEach(model => {
-                if (model.length === 1) {
-                    // One element : no submodel
-                    joinObj[model[0]] = true;
-                } else {
-                    // Multiple elements : first is model, nexts are submodels
-                    joinObj[model[0]] = {};
-                    model.slice(1).forEach(subModel => {
-                        joinObj[model[0]][subModel] = true;
-                    });
-                }
-            });
-
-        return joinObj;
-    }
+    embed  : embed  => JSON.parse(decodeURIComponent(embed))
 };
 
 /**
