@@ -9,27 +9,30 @@ import APIError from '../APIError';
  */
 function modelParser (req, res, next, model) {
     let modelsNames = {
-        articles     : 'Article',
-        categories   : 'Category',
-        promotions   : 'Promotion',
-        devices      : 'Device',
-        fundations   : 'Fundation',
-        groups       : 'Group',
-        meansoflogins: 'MeanOfLogin',
-        periods      : 'Period',
-        points       : 'Point',
-        prices       : 'Price',
-        purchases    : 'Purchase',
-        reloads      : 'Reload',
-        reloadTypes  : 'Reloadtype',
-        rights       : 'Right',
-        users        : 'User'
+        articles      : 'Article',
+        categories    : 'Category',
+        devices       : 'Device',
+        fundations    : 'Fundation',
+        groups        : 'Group',
+        meansoflogins : 'MeanOfLogin',
+        meansofpayment: 'MeanOfPayment',
+        periods       : 'Period',
+        periodPoints  : 'PeriodPoint',
+        points        : 'Point',
+        prices        : 'Price',
+        promotions    : 'Promotion',
+        purchases     : 'Purchase',
+        reloads       : 'Reload',
+        reloadTypes   : 'Reloadtype',
+        rights        : 'Right',
+        sets          : 'Set',
+        transfers     : 'Transfer',
+        users         : 'User'
     };
 
     let possibleValues = Object.keys(modelsNames);
-    let index          = possibleValues.indexOf(model);
 
-    if (index === -1) {
+    if (possibleValues.indexOf(model) === -1) {
         return next(new APIError(404, 'Model not found'));
     }
 
