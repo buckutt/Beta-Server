@@ -1,3 +1,5 @@
+import APIError from '../APIError';
+
 /**
  * Retrieve the point id from the SSL certificate fingerprint
  * @param {Request}  req  Express request
@@ -23,8 +25,7 @@ export default (req, res, next) => {
         .run()
         .then(devices => {
             if (devices.length === 0) {
-                // TODO : throw
-                return;
+                return false;
             }
 
             device = devices[0];
@@ -39,7 +40,6 @@ export default (req, res, next) => {
 
                     if (diff < minPeriod) {
                         chosenPoint = periodPoint.pointId;
-                        console.log('I choose point', chosenPoint);
                         minPeriod   = diff;
                     }
                 })
@@ -47,7 +47,11 @@ export default (req, res, next) => {
 
             return Promise.all(promises);
         })
-        .then(() => {
+        .then(ok => {
+            if (!ok) {
+                return next(new APIError(404, 'Device not found', fingerprint));
+            }
+
             req.pointId = chosenPoint;
 
             res.header('point', req.pointId);
