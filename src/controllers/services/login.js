@@ -20,7 +20,7 @@ export default app => {
 
     const secret            = app.locals.config.secret;
     const tokenOptions      = {
-        expiresInMinutes: 1440
+        expiresIn: '24h'
     };
 
     router.post('/services/login', (req, res, next) => {
@@ -59,8 +59,8 @@ export default app => {
 
         models.MeanOfLogin
             .filter({
-                type: req.body.meanOfLogin,
-                data: req.body.data
+                type: req.body.meanOfLogin.toString(),
+                data: req.body.data.toString()
             })
             .limit(1)
             .getJoin({
