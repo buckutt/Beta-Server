@@ -82,7 +82,7 @@ export default {
 
         /* Devices */
         let deviceEeetop1 = new models.Device({
-            fingerprint     : 'da39a3ee5e6b4b0d3255bfef95601890afd80709',
+            fingerprint     : 'DA39A3EE5E6B4B0D3255BFEF95601890AFD80709',
             name            : 'Eeetop1',
             doubleValidation: true,
             offlineSupport  : true,
@@ -90,7 +90,7 @@ export default {
         });
 
         let deviceEeetop2 = new models.Device({
-            fingerprint     : 'da39a3ee5e6b4b0d3255bfef95601890afd80709',
+            fingerprint     : '43827897F391A51F23081BAFF7D15C7105D653AD',
             name            : 'Eeetop2',
             doubleValidation: true,
             offlineSupport  : true,
@@ -137,7 +137,7 @@ export default {
         });
 
         let molGJEtuMail = new models.MeanOfLogin({
-            type: 'etuId',
+            type: 'etuMail',
             data: 'gabriel.juchault@utt.fr'
         });
 
@@ -232,6 +232,11 @@ export default {
             isAdmin: true
         });
 
+        let rightGJSeller = new models.Right({
+            name   : 'seller',
+            isAdmin: true
+        });
+
         /* Sets */
         let setBarresf1e = new models.Set({
             name: 'Barres Formule 1€'
@@ -247,7 +252,7 @@ export default {
             lastname   : 'Juchault',
             fullname   : 'Gabriel Juchault',
             nickname   : 'Extaze',
-            pin        : '$2a$12$0Hgro3cPeVvZNWrpcBsT2O2AfAfMsoigS9na6V6esH3G462.WV2fm',
+            pin        : '$2a$12$9w5Riq5qbjyhZ5.JD.72LOqlgAP2161QLkk9mDyvF/NNSx.2PGww6',
             password   : '$2a$12$aqJWiCvjD.azTpE2krKu3.1GDLHApaE.hfz2BM8pIeil.OJ1khST.',
             mail       : 'gabriel.juchault@utt.fr',
             credit     : 1200,
@@ -333,7 +338,8 @@ export default {
         };
 
         let rights = {
-            rightGJAdmin
+            rightGJAdmin,
+            rightGJSeller
         };
 
         let sets = {
@@ -390,8 +396,7 @@ export default {
         /* Articles - Relationships : cateogry, point, price, sets, promotion */
         data.articles.articleKinderDelice.prices     = [ data.prices.price50 ];
         data.articles.articleKinderDelice.sets       = [ data.sets.setBarresf1e ];
-        data.articles.articleKinderDelice.cateogryId = data.categories.categoryBarres.id;
-        data.articles.articleKinderDelice.pointId    = data.points.pointFoyer.id;
+        data.articles.articleKinderDelice.categoryId = data.categories.categoryBarres.id;
         arr.push(data.articles.articleKinderDelice.saveAll({
             prices: true,
             sets  : true
@@ -399,8 +404,7 @@ export default {
 
         data.articles.articleMars.prices     = [ data.prices.price50 ];
         data.articles.articleMars.sets       = [ data.sets.setBarresf1e ];
-        data.articles.articleMars.cateogryId = data.categories.categoryBarres.id;
-        data.articles.articleMars.pointId    = data.points.pointFoyer.id;
+        data.articles.articleMars.categoryId = data.categories.categoryBarres.id;
         arr.push(data.articles.articleMars.saveAll({
             prices: true,
             sets  : true
@@ -408,8 +412,7 @@ export default {
 
         data.articles.articleKinderCountry.prices     = [ data.prices.price50 ];
         data.articles.articleKinderCountry.sets       = [ data.sets.setBarresf1e ];
-        data.articles.articleKinderCountry.cateogryId = data.categories.categoryBarres.id;
-        data.articles.articleKinderCountry.pointId    = data.points.pointFoyer.id;
+        data.articles.articleKinderCountry.categoryId = data.categories.categoryBarres.id;
         arr.push(data.articles.articleKinderCountry.saveAll({
             prices: true,
             sets  : true
@@ -417,24 +420,21 @@ export default {
 
         data.articles.articleIceTeaPeche.prices     = [ data.prices.price50 ];
         data.articles.articleIceTeaPeche.sets       = [ data.sets.setCanettesf1e ];
-        data.articles.articleIceTeaPeche.cateogryId = data.categories.categoryCanettes.id;
-        data.articles.articleIceTeaPeche.pointId    = data.points.pointFoyer.id;
+        data.articles.articleIceTeaPeche.categoryId = data.categories.categoryCanettes.id;
         arr.push(data.articles.articleIceTeaPeche.saveAll({
             prices: true,
             sets  : true
         }));
 
         data.articles.articleEau.prices     = [ data.prices.price50 ];
-        data.articles.articleEau.cateogryId = data.categories.categoryGeneral.id;
-        data.articles.articleEau.pointId    = data.points.pointFoyer.id;
+        data.articles.articleEau.categoryId = data.categories.categoryGeneral.id;
         arr.push(data.articles.articleEau.saveAll({
             prices: true
         }));
 
         data.articles.articleIceTeaMangue.prices     = [ data.prices.price50 ];
         data.articles.articleIceTeaMangue.sets       = [ data.sets.setCanettesf1e ];
-        data.articles.articleIceTeaMangue.cateogryId = data.categories.categoryCanettes.id;
-        data.articles.articleIceTeaMangue.pointId    = data.points.pointFoyer.id;
+        data.articles.articleIceTeaMangue.categoryId = data.categories.categoryCanettes.id;
         arr.push(data.articles.articleIceTeaMangue.saveAll({
             prices: true,
             sets  : true
@@ -442,8 +442,7 @@ export default {
 
         data.articles.articleLiptonic.prices     = [ data.prices.price50 ];
         data.articles.articleLiptonic.sets       = [ data.sets.setCanettesf1e ];
-        data.articles.articleLiptonic.cateogryId = data.categories.categoryCanettes.id;
-        data.articles.articleLiptonic.pointId    = data.points.pointFoyer.id;
+        data.articles.articleLiptonic.categoryId = data.categories.categoryCanettes.id;
         arr.push(data.articles.articleLiptonic.saveAll({
             prices: true,
             sets  : true
@@ -451,8 +450,7 @@ export default {
 
         data.articles.articleSchweppes.prices     = [ data.prices.price50 ];
         data.articles.articleSchweppes.sets       = [ data.sets.setCanettesf1e ];
-        data.articles.articleSchweppes.cateogryId = data.categories.categoryCanettes.id;
-        data.articles.articleSchweppes.pointId    = data.points.pointFoyer.id;
+        data.articles.articleSchweppes.categoryId = data.categories.categoryCanettes.id;
         arr.push(data.articles.articleSchweppes.saveAll({
             prices: true,
             sets  : true
@@ -460,8 +458,7 @@ export default {
 
         data.articles.articleSchweppesAgrum.prices     = [ data.prices.price50 ];
         data.articles.articleSchweppesAgrum.sets       = [ data.sets.setCanettesf1e ];
-        data.articles.articleSchweppesAgrum.cateogryId = data.categories.categoryCanettes.id;
-        data.articles.articleSchweppesAgrum.pointId    = data.points.pointFoyer.id;
+        data.articles.articleSchweppesAgrum.categoryId = data.categories.categoryCanettes.id;
         arr.push(data.articles.articleSchweppesAgrum.saveAll({
             prices: true,
             sets  : true
@@ -469,23 +466,20 @@ export default {
 
         data.articles.articleCocaCola.prices     = [ data.prices.price50 ];
         data.articles.articleCocaCola.sets       = [ data.sets.setCanettesf1e ];
-        data.articles.articleCocaCola.cateogryId = data.categories.categoryCanettes.id;
-        data.articles.articleCocaCola.pointId    = data.points.pointFoyer.id;
+        data.articles.articleCocaCola.categoryId = data.categories.categoryCanettes.id;
         arr.push(data.articles.articleCocaCola.saveAll({
             prices: true,
             sets  : true
         }));
 
         data.articles.articleCrepe.prices     = [ data.prices.price50 ];
-        data.articles.articleCrepe.cateogryId = data.categories.categoryGeneral.id;
-        data.articles.articleCrepe.pointId    = data.points.pointFoyer.id;
+        data.articles.articleCrepe.categoryId = data.categories.categoryGeneral.id;
         arr.push(data.articles.articleCrepe.saveAll({
             prices: true
         }));
 
         data.articles.articleBeer.prices     = [ data.prices.price250 ];
-        data.articles.articleBeer.cateogryId = data.categories.categoryGeneral.id;
-        data.articles.articleBeer.pointId    = data.points.pointFoyer.id;
+        data.articles.articleBeer.categoryId = data.categories.categoryGeneral.id;
         arr.push(data.articles.articleBeer.saveAll({
             prices: true
         }));
@@ -530,9 +524,28 @@ export default {
         arr.push(data.periodPoints.periodPointEternityForEEtop2Foyer.save());
 
         /* Points - Relationships : periodPoints, articles, promotions, purchases, reloads */
+        data.points.pointFoyer.articles = [
+            data.articles.articleKinderDelice,
+            data.articles.articleMars,
+            data.articles.articleKinderCountry,
+            data.articles.articleIceTeaPeche,
+            data.articles.articleEau,
+            data.articles.articleIceTeaMangue,
+            data.articles.articleLiptonic,
+            data.articles.articleSchweppes,
+            data.articles.articleSchweppesAgrum,
+            data.articles.articleCocaCola,
+            data.articles.articleCrepe,
+            data.articles.articleBeer
+        ];
+        arr.push(data.points.pointFoyer.saveAll({
+            articles: true
+        }));
 
         /* Prices - Relationships : fundation, group, period, articles, promotion */
         data.prices.price50.fundationId = data.fundations.fundationFoyer.id;
+        data.prices.price50.groupId     = data.groups.groupCotisants.id;
+        data.prices.price50.periodId    = data.periods.periodEternity.id;
         data.prices.price50.articles = [
             data.articles.articleMars,
             data.articles.articleKinderCountry,
@@ -547,13 +560,19 @@ export default {
         }));
 
         data.prices.price100F1E.fundationId = data.fundations.fundationFoyer.id;
+        data.prices.price100F1E.groupId     = data.groups.groupCotisants.id;
+        data.prices.price100F1E.periodId    = data.periods.periodEternity.id;
         arr.push(data.prices.price100F1E.save());
 
         data.prices.price1003C.fundationId = data.fundations.fundationFoyer.id;
+        data.prices.price1003C.groupId     = data.groups.groupCotisants.id;
+        data.prices.price1003C.periodId    = data.periods.periodEternity.id;
         arr.push(data.prices.price1003C.save());
 
         data.prices.price250.fundationId = data.fundations.fundationFoyer.id;
-        data.prices.price250.articles = [ data.articles.articleBeer ];
+        data.prices.price250.groupId     = data.groups.groupCotisants.id;
+        data.prices.price250.periodId    = data.periods.periodEternity.id;
+        data.prices.price250.articles    = [ data.articles.articleBeer ];
         arr.push(data.prices.price250.saveAll({
             articles: true
         }));
@@ -584,6 +603,12 @@ export default {
         data.rights.rightGJAdmin.periodId = data.periods.periodNow.id;
         data.rights.rightGJAdmin.users    = [ data.users.userGJ ];
         arr.push(data.rights.rightGJAdmin.saveAll({
+            users : true
+        }));
+
+        data.rights.rightGJSeller.periodId = data.periods.periodNow.id;
+        data.rights.rightGJSeller.users    = [ data.users.userGJ ];
+        arr.push(data.rights.rightGJSeller.saveAll({
             users : true
         }));
 
