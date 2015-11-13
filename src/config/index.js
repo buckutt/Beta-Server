@@ -7,32 +7,33 @@ let rightsManagement = {
     all     : ['admin'],
     seller  : {
         read : [
-            '/api/articles',
-            '/api/articleslinks',
-            '/api/users',
-            '/api/usersrights',
-            '/api/usersgroups',
-            '/api/devicespoints',
-            '/api/devices',
-            '/api/meanofloginsusers',
-            '/api/services/availableArticles'
+            '/articles',
+            '/articles/search',
+            '/promotions',
+            '/promotions/search',
+            '/sets',
+            '/sets/search',
+            '/meansofpayment',
+            '/meansofpayment/search',
+            '/devices',
+            '/devices/search'
         ],
         write: [
-            '/api/services/purchase'
+            '/services/basket'
         ]
     },
     reloader: {
         read : [
-            '/api/users',
-            '/api/usersrights',
-            '/api/usersgroups',
-            '/api/devicespoints',
-            '/api/devices',
-            '/api/reloadtypes',
-            '/api/meanofloginsusers'
+            '/users',
+            '/usersrights',
+            '/usersgroups',
+            '/devicespoints',
+            '/devices',
+            '/reloadtypes',
+            '/meanofloginsusers'
         ],
         write: [
-            '/api/services/reload'
+            '/services/reload'
         ]
     }
 };
