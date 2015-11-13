@@ -17,29 +17,28 @@ npm install
 ### SSL
 
 ```sh
-# CA Key and Certificate
-openssl genrsa -aes256 -out ca.key 4096
-openssl req -new -x509 -days 365 -key ca.key -out ca.crt
+# Edit configuration files
 
-# Create the Server Key CSR and Certificate
-openssl genrsa -aes256 -out server.key 4096
-openssl req -new -key server.key -out server.csr
+Edit files ca.cnf, server.cnf and client1.cnf (duplicate client1.cnf for every device)
 
-# Self Signing
-openssl x509 -req -days 365 -in server.csr -CA ca.crt -CAkey ca.key -set_serial 01 -out server.crt
+# CA
+openssl req -new -x509 -days 9999 -config ca.cnf -keyout ca-key.pem -out ca-crt.pem
 
-# Create the Client Key and CSR
-openssl genrsa -aes256 -out test.key 4096
-openssl req -new -key test.key -out test.csr
+# Server
+openssl genrsa -out server-key.pem 4096
+openssl req -new -config server.cnf -key server-key.pem -out server-csr.pem
+openssl x509 -req -extfile server.cnf -days 999 -passin "pass:password" -in server-csr.pem -CA ca-crt.pem -CAkey ca-key.pem -CAcreateserial -out server-crt.pem
 
-# Sign client certificate
-openssl x509 -req -days 365 -in test.csr -CA ca.crt -CAkey ca.key -set_serial 02 -out test.crt
+# Client
+openssl genrsa -out client1-key.pem 4096
+openssl req -new -config client1.cnf -key client1-key.pem -out client1-csr.pem
+openssl x509 -req -extfile client1.cnf -days 999 -passin "pass:password" -in client1-csr.pem -CA ca-crt.pem -CAkey ca-key.pem -CAcreateserial -out client1-crt.pem
+
+# Check
+openssl verify -CAfile ca-crt.pem client1-crt.pem
 
 # Pack client key and certificate to be used in browsers
-openssl pkcs12 -export -clcerts -in test.crt -inkey test.key -out test.p12
-
-# Remove password from server key
-openssl rsa -in server.key -out server.key.nopwd && mv server.key.nopwd server.key
+openssl pkcs12 -export -clcerts -in client1.crt -inkey client1.key -out client1.p12
 ```
 
 ## Starting
