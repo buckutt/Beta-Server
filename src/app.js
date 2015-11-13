@@ -9,6 +9,7 @@ import bodyParser   from 'body-parser';
 import compression  from 'compression';
 import consoleTitle from 'console-title';
 import cookieParser from 'cookie-parser';
+import cors         from 'cors';
 import express      from 'express';
 import https        from 'https';
 import morgan       from 'morgan';
@@ -23,6 +24,7 @@ app.locals.config = config;
 app.locals.models = models;
 
 // Some middlewares
+app.use(cors());
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -117,9 +119,9 @@ app.start = () => {
     let path = (process.env.NODE_ENV === 'test') ? 'ssl/test' : 'ssl';
 
     let server = https.createServer({
-        key               : fs.readFileSync(`./${path}/server.key`),
-        cert              : fs.readFileSync(`./${path}/server.crt`),
-        ca                : fs.readFileSync(`./${path}/ca.crt`),
+        key               : fs.readFileSync(`./${path}/server-key.pem`),
+        cert              : fs.readFileSync(`./${path}/server-crt.pem`),
+        ca                : fs.readFileSync(`./${path}/ca-crt.pem`),
         requestCert       : true,
         rejectUnauthorized: false
     }, app);
