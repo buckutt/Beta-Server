@@ -35,7 +35,7 @@ export default (req, res, next) => {
 
         // Get : check for read authorizations
         // Post/Put/Delete : check for write authorizations
-        if (method === 'get' && authorize[right.name].read.indexOf(url) > -1) {
+        if (method.toLowerCase() === 'get' && authorize[right.name].read.indexOf(url) > -1) {
             handled = true;
 
             return next();
