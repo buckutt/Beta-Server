@@ -33,6 +33,12 @@ export default (req, res, next) => {
             return next();
         }
 
+        const uuid = /[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$/i;
+
+        if (uuid.test(url)) {
+            url = url.slice(0, -37);
+        }
+
         // Get : check for read authorizations
         // Post/Put/Delete : check for write authorizations
         if (method.toLowerCase() === 'get' && authorize[right.name].read.indexOf(url) > -1) {

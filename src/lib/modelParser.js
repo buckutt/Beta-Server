@@ -14,7 +14,7 @@ function modelParser (req, res, next, model) {
         devices       : 'Device',
         fundations    : 'Fundation',
         groups        : 'Group',
-        meansoflogins : 'MeanOfLogin',
+        meansoflogin  : 'MeanOfLogin',
         meansofpayment: 'MeanOfPayment',
         periods       : 'Period',
         periodPoints  : 'PeriodPoint',

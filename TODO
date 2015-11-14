@@ -2,6 +2,7 @@ To do :
 
 Working :
 * Refuse basket if too much alcohol
+* Be more careful in basket (use only price ids and not article ids/amounts)
 
 Done :
 * Sets

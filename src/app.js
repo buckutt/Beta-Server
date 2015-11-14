@@ -24,7 +24,9 @@ app.locals.config = config;
 app.locals.models = models;
 
 // Some middlewares
-app.use(cors());
+app.use(cors({
+    exposedHeaders: ['device', 'point']
+}));
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(cookieParser());

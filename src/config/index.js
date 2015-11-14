@@ -13,10 +13,13 @@ let rightsManagement = {
             '/promotions/search',
             '/sets',
             '/sets/search',
+            '/meansoflogin',
+            '/meansoflogin/search',
             '/meansofpayment',
             '/meansofpayment/search',
             '/devices',
-            '/devices/search'
+            '/devices/search',
+            '/users'
         ],
         write: [
             '/services/basket'
