@@ -588,16 +588,9 @@ export default {
             sets: true
         }));
 
-        data.promotions.promotion3crepes.articles = [
-            data.articles.articleCrepe,
-            data.articles.articleCrepe,
-            data.articles.articleCrepe
-        ];
         data.promotions.promotion3crepes.pointId = data.points.pointFoyer.id;
         data.promotions.promotion3crepes.priceId = data.prices.price1003C.id;
-        arr.push(data.promotions.promotion3crepes.saveAll({
-            articles: true
-        }));
+        arr.push(data.promotions.promotion3crepes.save());
 
         /* Rights - Relationships : period, users */
         data.rights.rightGJAdmin.periodId = data.periods.periodNow.id;
@@ -615,5 +608,14 @@ export default {
         /* Users - Relationships : groups, rights, meansOfLogin */
 
         return arr;
+    },
+    post: (models, data) => {
+        let r                = models.r;
+        let ArticlePromotion = models.Promotion._joins.articles.link;
+        return r.table(ArticlePromotion).insert([
+            { Article_id: data.articles.articleCrepe.id, Promotion_id: data.promotions.promotion3crepes.id },
+            { Article_id: data.articles.articleCrepe.id, Promotion_id: data.promotions.promotion3crepes.id },
+            { Article_id: data.articles.articleCrepe.id, Promotion_id: data.promotions.promotion3crepes.id }
+        ]).run();
     }
 };

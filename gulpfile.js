@@ -46,6 +46,9 @@ gulp.task('seed', ['default'], function (cb) {
             .then(() =>
                 models.r.wait()
             )
+            .then(() =>
+                buckuttData.post(models, raw.data)
+            )
             .then(() => {
                 console.log('Inserted relationships');
                 cb();
