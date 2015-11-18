@@ -75,7 +75,7 @@ describe('Before tests', () => {
                 userId   : userId
             }, {
                 type     : 'etuId',
-                data     : 35426,
+                data     : '22000000353423',
                 createdAt: new Date(),
                 editedAt : new Date(),
                 isRemoved: false,

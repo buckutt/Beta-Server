@@ -118,12 +118,24 @@ app.use((err, req, res, next) => { // jshint ignore:line
 });
 
 app.start = () => {
-    let path = (process.env.NODE_ENV === 'test') ? 'ssl/test' : 'ssl';
+    let key;
+    let cert;
+    let ca;
+
+    if (process.env.NODE_ENV === 'test') {
+        key  = `./ssl/test/server.key`;
+        cert = `./ssl/test/server.crt`;
+        ca   = `./ssl/test/ca.crt`;
+    } else {
+        key  = `./ssl/server-key.pem`;
+        cert = `./ssl/server-crt.pem`;
+        ca   = `./ssl/ca-crt.pem`;
+    }
 
     let server = https.createServer({
-        key               : fs.readFileSync(`./${path}/server-key.pem`),
-        cert              : fs.readFileSync(`./${path}/server-crt.pem`),
-        ca                : fs.readFileSync(`./${path}/ca-crt.pem`),
+        key               : fs.readFileSync(key),
+        cert              : fs.readFileSync(cert),
+        ca                : fs.readFileSync(ca),
         requestCert       : true,
         rejectUnauthorized: false
     }, app);

@@ -29,3 +29,4 @@ let options = {
 unirest.request = unirest.request.defaults(options);
 
 global.unirest = unirest;
+global.q       = obj => encodeURIComponent(JSON.stringify(obj));

@@ -23,7 +23,7 @@ describe('Update', () => {
             unirest.get('https://localhost:3006/articles')
                 .type('json')
                 .end(response => {
-                    unirest.put('https://localhost:3006/articles/' + response.body[0].id + '/')
+                    unirest.put(`https://localhost:3006/articles/${response.body[0].id}/`)
                         .type('json')
                         .send({
                             name: 'Updated name'
@@ -40,7 +40,7 @@ describe('Update', () => {
             unirest.get('https://localhost:3006/articles')
                 .type('json')
                 .end(response => {
-                    unirest.put('https://localhost:3006/articles/' + response.body[0].id + '/')
+                    unirest.put(`https://localhost:3006/articles/${response.body[0].id}/`)
                         .type('json')
                         .send({
                             name: 'Updated name',

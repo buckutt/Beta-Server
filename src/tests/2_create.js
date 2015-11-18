@@ -1,6 +1,6 @@
 import assert from 'assert';
 
-/* global unirest */
+/* global unirest, q */
 
 let IceTeaPeche;
 let KinderDelice;
@@ -150,7 +150,7 @@ describe('Create', function () {
         });
 
         it('should create MeanOfLogin', done => {
-            unirest.post('https://localhost:3006/meansoflogins')
+            unirest.post('https://localhost:3006/meansoflogin')
                 .type('json')
                 .send({
                     type: 'etuMail',
@@ -293,7 +293,11 @@ describe('Create', function () {
         });
 
         it('should create Purchase with relationships', done => {
-            unirest.post('https://localhost:3006/purchases?embed=articles,promotion')
+            const e = {
+                articles : true,
+                promotion: true
+            };
+            unirest.post(`https://localhost:3006/purchases?embed=${q(e)}`)
                 .type('json')
                 .send({
                     fundationId: UNG.id,

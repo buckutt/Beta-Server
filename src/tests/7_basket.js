@@ -1,6 +1,6 @@
 import assert from 'assert';
 
-/* global unirest */
+/* global unirest, q */
 
 describe('Basket', () => {
     it('should support payment', done => {
@@ -158,7 +158,11 @@ describe('Basket', () => {
         let kinder;
 
         before(done => {
-            unirest.get(`https://localhost:3006/users/${process.env.GJId}?embed=purchases,reloads`)
+            const e = {
+                purchases: true,
+                reloads  : true
+            };
+            unirest.get(`https://localhost:3006/users/${process.env.GJId}?embed=${q(e)}`)
                 .type('json')
                 .end(response => {
                     gj = response.body;

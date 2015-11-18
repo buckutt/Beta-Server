@@ -1,6 +1,6 @@
 import assert from 'assert';
 
-/* global unirest */
+/* global unirest, q */
 
 /**
  * Automatically adds bearer
@@ -25,7 +25,7 @@ describe('Relatives', () => {
                 .end(response => {
                     let id = response.body[0].id;
 
-                    unirest.get('https://localhost:3006/purchases/' + id + '/promotion')
+                    unirest.get(`https://localhost:3006/purchases/${id}/promotion`)
                         .type('json')
                         .end(response => {
                             assert.equal(200, response.code);
@@ -35,13 +35,16 @@ describe('Relatives', () => {
                 });
         });
 
-        it('should get the submodel and its relatives with ?embed=modelA,modelB', done => {
+        it('should get the submodel and its relatives with ?embed={ modelA: true, modelB: true }', done => {
             unirest.get('https://localhost:3006/purchases')
                 .type('json')
                 .end(response => {
                     let id = response.body[0].id;
 
-                    unirest.get('https://localhost:3006/purchases/' + id + '/promotion?embed=purchases')
+                    const e = {
+                        purchases: true
+                    };
+                    unirest.get(`https://localhost:3006/purchases/${id}/promotion?embed=${q(e)}`)
                         .type('json')
                         .end(response => {
                             assert.equal(200, response.code);

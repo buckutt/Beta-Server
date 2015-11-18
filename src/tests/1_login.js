@@ -51,7 +51,7 @@ describe('Login', function () {
             .type('json')
             .send({
                 meanOfLogin: 'etuId',
-                data       : 35426,
+                data       : '22000000353423',
                 password   : 'buckutt'
             })
             .end(response => {
@@ -77,7 +77,7 @@ describe('Login', function () {
             .type('json')
             .send({
                 meanOfLogin: 'etuId',
-                data       : 35426,
+                data       : '22000000353423',
                 pin        : 1234
             })
             .end(response => {

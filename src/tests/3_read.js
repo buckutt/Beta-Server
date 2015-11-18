@@ -1,7 +1,7 @@
 import { clone } from '../lib/utils';
 import assert    from 'assert';
 
-/* global unirest */
+/* global unirest, q */
 
 let firstArticle;
 let totalArticles;
@@ -38,7 +38,7 @@ describe('Read', () => {
         });
 
         it('should read correctly one model', done => {
-            unirest.get('https://localhost:3006/articles/' + firstArticle)
+            unirest.get(`https://localhost:3006/articles/${firstArticle}`)
                 .type('json')
                 .end(response => {
                     assert.equal(200, response.code);
@@ -48,11 +48,17 @@ describe('Read', () => {
                 });
         });
 
-        it('should read correctly the model and its relatives with ?embed=modelA,modelB', done => {
+        it('should read correctly the model and its relatives with ?embed={ modelA: true, modelB: true }', done => {
+            const e = {
+                buyer   : true,
+                seller  : true,
+                articles: true
+            };
+
             unirest.get('https://localhost:3006/purchases/')
                 .type('json')
                 .end(response => {
-                    unirest.get(`https://localhost:3006/purchases/${response.body[0].id}/?embed=buyer,seller,articles`)
+                    unirest.get(`https://localhost:3006/purchases/${response.body[0].id}/?embed=${q(e)}`)
                         .type('json')
                         .end(response => {
                             assert.equal('string', typeof response.body.buyer.id);
